@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Your loan quote</title>
+<link rel="stylesheet" href="/theterms/theterms.css">
+</head>
+<body class="tt-page">
+<div id="tt-root"></div>
+<script src="/theterms/engine.js"></script>
+<script src="/theterms/view.js"></script>
+<script>
+/*
+ * The customer's copy of a quote (#139). The link carries the loan's terms and
+ * the bank's text in its fragment, which never reaches a server, and the page
+ * runs the same engine the officer's screen ran, so the numbers match.
+ */
+(function () {
+  'use strict';
+  var E = window.TheTermsEngine, V = window.TheTermsView, esc = V.esc, money = V.money;
+  var root = document.getElementById('tt-root');
+  var q = null;
+  try { q = E.unpack(location.hash); } catch (e) { q = null; }
+  if (!q || q.v !== 1 || !Array.isArray(q.options) || !q.options.length) {
+    root.innerHTML = '<main class="tt-main"><div class="tt-card"><h1>This quote link is incomplete</h1>' +
+      '<p class="tt-muted">Part of the link may be missing. Ask the banker who sent it to send it again.</p></div></main>';
+    return;
+  }
+  var bank = q.bank || {};
+  document.body.setAttribute('style', V.brandVars(bank));
+  document.title = 'Your loan quote from ' + (bank.name || 'your bank');
+  var all = q.options.map(function (o) { return { o: o, r: E.calculate(o.input) }; }).filter(function (x) { return x.r.ok; });
+  if (!all.length) { root.innerHTML = '<main class="tt-main"><div class="tt-card"><h1>This quote can\u2019t be shown</h1></div></main>'; return; }
+  var cur = all.filter(function (x) { return x.o.id === q.selected; })[0] || all[0];
+  var full = false;
+  var made = q.at ? E.formatDate(q.at.slice(0, 10)) : '';
+  var first = String((q.by && q.by.name) || '').split(' ')[0];
+
+  function card(x) {
+    var s = V.summary(x.r);
+    var on = x === cur;
+    return '<button type="button" class="tt-opt" data-opt="' + esc(x.o.id) + '" aria-pressed="' + on + '">' +
+      '<span class="tt-opt-name">' + esc(x.o.name) + '</span>' +
+      '<span class="tt-pay">' + esc(s.amount) + ' <small>' + esc(s.per) + '</small></span>' +
+      '<span class="tt-apr">APR ' + esc(V.apr(x.r.apr)) + '</span>' +
+      '<span class="tt-kv"><span>Total of payments</span><span>' + money(x.r.totals.totalOfPayments) + '</span></span>' +
+      (x.r.premium ? '<span class="tt-kv"><span>Premium</span><span>' + money(x.r.premium) + '</span></span>' : '') +
+      '<span class="tt-pick">' + (on ? '\u2713 Showing' : 'Show this one') + '</span></button>';
+  }
+
+  function paint() {
+    var r = cur.r, s = V.summary(r);
+    var h = '<header class="tt-top"><div class="tt-top-in">' + (bank.logo ? '<img src="' + esc(bank.logo) + '" alt="">' : '') +
+      '<span class="tt-top-name">' + esc(bank.name || '') + '</span></div></header><main class="tt-main">';
+    h += '<p class="tt-muted tt-small">Loan quote' + (made ? ' \u00b7 ' + esc(made) : '') + '</p>';
+    h += '<h1>Your ' + esc((q.product && q.product.name) || 'loan') + ' quote</h1>';
+    h += '<p class="tt-muted" style="margin:0 0 14px;">' + (q.by && q.by.name ? 'From ' + esc(q.by.name) + ' at ' + esc(bank.name) + '. ' : '') +
+      'These are the terms you asked about.</p>';
+    h += '<div class="tt-card tt-hero"><div class="tt-pay">' + esc(s.amount) + ' <small>' + esc(s.per) + '</small></div>' +
+      '<div class="tt-line">' + esc(s.line) + '</div><div class="tt-apr">APR ' + esc(V.apr(r.apr)) + '</div>' +
+      '<dl class="tt-items" style="margin-top:12px;">' +
+      '<div class="tt-item"><dt>Loan amount</dt><dd>' + money(r.amount) + '</dd></div>' +
+      '<div class="tt-item"><dt>Interest rate</dt><dd>' + esc(E.formatRate(r.input.rate, 2)) + '</dd></div>' +
+      (r.balloon ? '<div class="tt-item"><dt>Balloon payment</dt><dd>' + money(r.balloon) + '</dd></div>' : '') +
+      '<div class="tt-item"><dt>Total of payments</dt><dd>' + money(r.totals.totalOfPayments) + '</dd></div></dl></div>';
+    if (all.length > 1) {
+      h += '<div class="tt-card"><h3>Coverage options</h3><p class="tt-sub">Your banker priced these side by side. Coverage is optional unless it says otherwise.</p>' +
+        '<div class="tt-wedge">' + all.map(card).join('') + '</div></div>';
+    }
+    h += '<div class="tt-card"><h3>Truth in Lending disclosure</h3><p class="tt-sub">' + esc(cur.o.name) + '</p>' +
+      V.tila(r, { optionName: cur.o.name, optionText: cur.o.text, insuranceNotice: q.insuranceNotice }) + '</div>';
+    h += '<div class="tt-card"><h3>Payment by payment</h3><p class="tt-sub">How each payment splits between interest and principal.</p>' +
+      V.schedule(r, { all: full, limit: 12 }) +
+      (r.schedule.length > 13 ? '<div class="tt-noprint" style="margin-top:10px;"><button type="button" class="tt-btn ghost sm" id="tt-all">' +
+        (full ? 'Show fewer' : 'Show all ' + r.count + ' payments') + '</button></div>' : '') + '</div>';
+    if (q.disclosure) h += '<div class="tt-card"><p class="tt-disclosure">' + esc(q.disclosure) + '</p></div>';
+    h += '<div class="tt-card tt-noprint"><h3>Next step</h3><p class="tt-sub">Questions? Reply to the text' + (first ? ', or reach ' + esc(first) + ' directly' : '') + '.</p><div class="tt-actions">';
+    if (q.start) h += '<a class="tt-btn bank" href="' + esc(q.start) + '">Start your application</a>';
+    if (q.by && q.by.email) h += '<a class="tt-btn ghost" href="mailto:' + esc(q.by.email) + '?subject=' + encodeURIComponent('My ' + ((q.product && q.product.name) || 'loan') + ' quote') + '">Email ' + esc(first || 'your banker') + '</a>';
+    if (bank.website) h += '<a class="tt-btn ghost" href="' + esc(bank.website) + '" target="_blank" rel="noopener">Visit ' + esc(bank.name) + '</a>';
+    h += '<button type="button" class="tt-btn ghost" id="tt-print">Save as PDF</button></div></div>';
+    h += '<p class="tt-foot">Calculated with TheTerms by Lenni from ' + esc(bank.name || 'the bank') + '\u2019s loan settings' + (made ? ' on ' + esc(made) : '') +
+      '. A quote, not a commitment to lend.</p></main>';
+    root.innerHTML = h;
+  }
+
+  root.addEventListener('click', function (e) {
+    var t = e.target.closest('button');
+    if (!t) return;
+    if (t.id === 'tt-all') { full = !full; paint(); return; }
+    if (t.id === 'tt-print') { window.print(); return; }
+    var id = t.getAttribute('data-opt');
+    if (id) { cur = all.filter(function (x) { return x.o.id === id; })[0] || cur; paint(); }
+  });
+
+  paint();
+  if (/[?&]print=1\b/.test(location.search)) { full = true; paint(); setTimeout(function () { window.print(); }, 300); }
+})();
+</script>
+</body>
+</html>

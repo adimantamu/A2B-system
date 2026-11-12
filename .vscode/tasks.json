@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SSH: Connect to A2B server",
+      "type": "shell",
+      "command": "ssh a2b",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "focus": true }
+    },
+    {
+      "label": "Deploy: ship this tree to the server",
+      "type": "shell",
+      "command": "${workspaceFolder}/deploy/deploy.sh",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Deploy: tail the service log",
+      "type": "shell",
+      "command": "ssh a2b 'sudo journalctl -u a2b-api -f -n 80'",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Tunnel: open the remote console on localhost:8020",
+      "type": "shell",
+      "command": "ssh -N -L 8020:127.0.0.1:80 a2b",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Run locally on :8000",
+      "type": "shell",
+      "command": "${workspaceFolder}/run.sh",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    }
+  ]
+}

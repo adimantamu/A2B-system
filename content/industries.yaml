@@ -1,0 +1,146 @@
+# Industry registry.
+#
+# "Industry" is the vendor's business type. It organizes the template library.
+# Not "category", not "vertical" — see docs/GLOSSARY.md.
+#
+# `templates: true` means we can host this industry today: it has a core intake
+# in core_sections.yaml, so every product catalogued under it is seedable, on a
+# tailored template where one exists and on the generic intake where none does.
+#
+# `templates: false` means catalogued only. Ingest still classifies a vendor
+# into it and still records the offerings it could not match, which is how an
+# industry earns its way onto the roadmap — but there is nothing to run yet, so
+# nothing can be sold into it.
+#
+# Keys are identity and do not change. Where the sales list uses different
+# wording, the wording is the `name` and the key stays as it was: renaming
+# `cpa_tax` to `accounting-cpa` would orphan every skill already seeded under it
+# along with the matcher phrases pointing at it.
+
+industries:
+  - key: banking
+    name: Banking / Lending
+    templates: true
+    blurb: Commercial, consumer and construction lending, plus deposit onboarding.
+    signals: [bank, lending, loan, deposit, fdic, credit union, member fdic]
+
+  - key: insurance
+    name: Insurance
+    templates: true
+    blurb: Agencies and brokers quoting personal and commercial coverage.
+    signals: [insurance, coverage, policy, carrier, premium, claims, insured]
+
+  - key: legal
+    name: Legal
+    templates: true
+    blurb: Firms running intake before the billable work starts.
+    signals: [law firm, attorney, counsel, litigation, estate planning, llc formation]
+
+  - key: marketing
+    name: Marketing
+    templates: true
+    blurb: Agencies scoping brand, web, campaign and retainer work.
+    signals: [marketing agency, branding, seo, campaign, paid media, creative agency]
+
+  - key: msp
+    name: Managed IT / MSP
+    templates: true
+    blurb: Managed service providers onboarding clients and running incidents.
+    signals: [managed services, it support, msp, helpdesk, managed it, cybersecurity services]
+
+  - key: title_escrow
+    name: Title & Escrow
+    templates: true
+    blurb: Title companies and escrow agents taking closings in.
+    signals: [title company, escrow, closing agent, title insurance, settlement services]
+
+  - key: real_estate
+    name: Real Estate Brokerage
+    templates: true
+    blurb: Brokerages representing buyers, sellers, landlords and tenants.
+    signals: [realtor, brokerage, listing, buyer representation, mls, listing agent]
+
+  - key: property_mgmt
+    name: Property Management
+    templates: true
+    blurb: Managers onboarding owners and processing tenants.
+    signals: [property management, tenant screening, rent collection, hoa management]
+
+  - key: wealth_ria
+    name: Wealth / RIA / Trust
+    templates: true
+    blurb: Advisors and trust departments onboarding households.
+    signals: [wealth management, registered investment advisor, financial planning, fiduciary]
+
+  - key: cpa_tax
+    name: Accounting / CPA
+    templates: true
+    blurb: Accounting and tax practices running annual and monthly intake.
+    signals: [cpa, accounting, tax preparation, bookkeeping, audit, payroll services]
+
+  # Healthcare arrives as three industries rather than one. A dental new-patient
+  # intake, a veterinary new-client intake and a medical referral ask genuinely
+  # different questions — a pet is not a patient, and only some of this is PHI —
+  # and site signals already tell them apart cleanly. One row on the sales list,
+  # three intakes underneath it.
+  - key: healthcare
+    name: Healthcare Practice
+    templates: true
+    blurb: Practices taking new patients, referrals and authorisations. PHI throughout.
+    signals: [clinic, practice, patient intake, medical, physician, new patients]
+
+  - key: dental
+    name: Dental
+    templates: true
+    blurb: Dental and orthodontic practices taking new patients.
+    signals: [dental, dentist, orthodontic, hygienist, teeth]
+
+  - key: veterinary
+    name: Veterinary
+    templates: true
+    blurb: Animal hospitals and clinics taking new clients.
+    signals: [veterinary, animal hospital, pet care, veterinarian]
+
+  - key: hr_peo
+    name: HR / PEO
+    templates: true
+    blurb: PEOs and HR teams onboarding clients and employees.
+    signals: [peo, human resources, benefits administration, employee onboarding, hr outsourcing]
+
+  - key: construction
+    name: Construction / GC
+    templates: true
+    blurb: General contractors bidding, mobilising and running projects.
+    signals: [general contractor, construction, design build, remodeling, subcontractor]
+
+  - key: architecture_engineering
+    name: Architecture / Engineering
+    templates: true
+    blurb: Design firms scoping projects through permit and construction admin.
+    signals: [architecture, architects, structural engineering, civil engineering, design firm]
+
+  - key: mortgage_broker
+    name: Mortgage Broker
+    templates: true
+    blurb: Brokers shopping purchase, refinance and investment loans.
+    signals: [mortgage broker, nmls, loan officer, we shop lenders, mortgage brokerage]
+
+  # Catalogued, no intake yet. Ingest classifies into these and the offerings it
+  # cannot match are the roadmap signal; nothing here is sellable until it gets
+  # a core intake of its own.
+  - key: staffing
+    name: Staffing & Recruiting
+    templates: false
+    signals: [staffing, recruiting, placement, talent]
+  - key: logistics
+    name: Logistics & Freight
+    templates: false
+    signals: [freight, logistics, trucking, 3pl]
+  - key: education
+    name: Education & Training
+    templates: false
+    signals: [tutoring, training, enrollment, academy]
+  - key: home_services
+    name: Home Services
+    templates: false
+    signals: [hvac, plumbing, roofing, electrician, landscaping]

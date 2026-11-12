@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lenni — Agent to Business</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+<div class="ribbon"><span class="tag">A2B</span> &nbsp;Lenni A2B platform — live build. Real scan, real skills, real tool calls. <b>Agent to Business.</b></div>
+
+<!-- ============================================================= -->
+<!-- VIEW 0: MARKETING HOMEPAGE -->
+<!-- ============================================================= -->
+<section class="view on" id="v-home">
+
+<div class="site-head"><div class="wrap"><div class="bar">
+  <div class="lenni-mark" style="font-size:26px;">lenni<span class="dot"></span></div>
+  <span class="pill navy" style="margin-left:2px;">Agent to Business</span>
+  <nav>
+    <a onclick="scrollToId('how')">How it works</a>
+    <a onclick="scrollToId('inds')">Industries</a>
+    <a onclick="openPublicLibrary()">Library</a>
+    <a class="agent-note" title="Agent-readable site manifest" onclick="toast('Lenni practices what it publishes: /llms.txt + /llms.md tell any AI agent what Lenni is and how to engage — the same files every customer gets.')">for agents: /llms.txt</a>
+    <a id="nav-acct" style="display:none;" onclick="openAccount()">Account</a>
+    <a class="btn ghost sm" id="nav-auth" href="/login?next=%2Fconsole%2F" onclick="stashPendingBuild()">Log in</a>
+  </nav>
+</div></div></div>
+
+<div class="hero"><div class="wrap">
+  <div class="kick">A2B · Agent to Business</div>
+  <h1>Their AI asks. Your business answers.</h1>
+  <div class="sub">One click on your site. A working session in their AI. The finished package delivered securely to you.</div>
+  <div class="urlbox">
+    <input id="url-in" type="text" placeholder="Paste your website — yourbank.com, yourfirm.com…" value="bluebonnetbank.com">
+    <button class="btn em" onclick="startScan()">See your A2B setup →</button>
+  </div>
+  <div class="under">Free to look. We read your website, match your services to our skill library, and show you your machine — <b>before you sign anything.</b></div>
+  <div class="trustline"><span>Nothing to rebuild</span><span>Works in Claude, ChatGPT, Copilot, Grok</span><span>Built to bank security standards</span><span>You stay the expert</span></div>
+</div></div>
+
+<div class="band" id="how"><div class="wrap">
+  <div class="shead"><div class="k">In the Google age, your website was a billboard</div><h2>In the AI age, it's a place of business.</h2><p>Your customers start in their AI now. Lenni turns every service on your website into a <b>skill</b> their AI can run — built on your rules, ending at your door.</p></div>
+  <div class="steps3">
+    <div class="stepc"><div class="n">1</div><h4>Paste your URL</h4><p>We read your website and match every service you offer to our skill template library — 18 industries deep, banking first. You confirm what we found.</p></div>
+    <div class="stepc"><div class="n">2</div><h4>Make the skills yours</h4><p>Each service seeds a skill from our templates. Edit the sections, add apps — calculator, ID verify, secure delivery — with an AI assistant at your side. Whatever you publish is your version. We never rewrite it.</p></div>
+    <div class="stepc"><div class="n">3</div><h4>Replace one link</h4><p>Each skill gives you a link and a QR code for your website — plus an agent page so AI assistants can find and run your services directly. Finished packages arrive through secure messaging and document upload.</p></div>
+  </div>
+</div></div>
+
+<div class="band alt"><div class="wrap">
+  <div class="mechrow">
+    <div class="tx">
+      <h3>Not a portal. Not a chatbot. How people work in the age of AI.</h3>
+      <p><b>One link. Every AI.</b> Your customers use Claude, ChatGPT, Copilot or Grok — one link on your page opens the one they already have, carrying your intake. Nothing for them to download, and no change to the rest of your site.</p>
+      <p>Your sections travel in the link itself — your questions, in your wording, in your order — so their AI has nothing to look up and nothing to guess at. Edit a section here and the next customer who clicks gets the edit.</p>
+      <p style="color:var(--em-d);font-weight:700;">We carry the conversation. We never enter it.</p>
+    </div>
+    <div class="mechbox">
+<span class="c">// what their AI does with your published skill</span><br>
+▸ <span class="y">load_skill</span>(bluebonnetbank.com <span class="c">→</span> multifamily-lending)<br>
+▸ section 1: <span class="g">collateral</span> … <span class="g">complete ✓</span><br>
+▸ <span class="y">get_next_section</span>() <span class="c">→ your published skill</span><br>
+▸ section 2: <span class="g">deal</span> — <span class="y">loan_calculator</span> runs … <span class="g">✓</span><br>
+▸ section 3: <span class="g">borrower</span> — <span class="y">id_verify</span> · docs … <span class="g">✓</span><br>
+▸ <span class="y">validate_package</span>() <span class="c">→</span> <span class="g">0 gaps</span><br>
+▸ <span class="y">secure_delivery</span>() <span class="c">→ your Convey. Not email.</span>
+    </div>
+  </div>
+</div></div>
+
+<div class="band" id="inds"><div class="wrap">
+  <div class="shead"><div class="k">18 industries in the library</div><h2>Banking first — the strictest room.</h2><p>Built to bank security and compliance standards, because banks came first. Every industry after inherits that.</p></div>
+  <div class="indgrid">
+    <div class="indc first" onclick="openPublicLibrary('banking')"><div class="ic">🏦</div><b>Banking</b><span>39 templates · live</span></div>
+    <div class="indc" onclick="openPublicLibrary('legal')"><div class="ic">⚖️</div><b>Legal</b><span>16 cataloged</span></div>
+    <div class="indc" onclick="openPublicLibrary('insurance')"><div class="ic">🛡️</div><b>Insurance</b><span>14 cataloged</span></div>
+    <div class="indc" onclick="openPublicLibrary('real_estate')"><div class="ic">🏠</div><b>Real Estate</b><span>10 cataloged</span></div>
+    <div class="indc" onclick="openPublicLibrary('cpa_tax')"><div class="ic">📊</div><b>CPA / Tax</b><span>12 cataloged</span></div>
+    <div class="indc" onclick="openPublicLibrary('msp')"><div class="ic">🖥️</div><b>Managed IT</b><span>11 cataloged</span></div>
+  </div>
+  <div id="inds-more" style="text-align:center;margin-top:22px;font-size:13.5px;color:var(--muted);">+ Title &amp; Escrow · Property Management · Wealth/RIA · Marketing · Construction · Mortgage · and more</div>
+  <div style="text-align:center;margin-top:18px;"><button class="btn em" onclick="openPublicLibrary()">Read the library — every template and section →</button><div style="margin-top:8px;font-size:12.5px;color:var(--muted);">No scan, no account. The questions themselves, before you paste anything.</div></div>
+</div></div>
+
+<div class="band alt"><div class="wrap" style="text-align:center;max-width:700px;">
+  <h2 style="font-size:28px;margin-bottom:10px;">The conversation moved. Move with it.</h2>
+  <p style="color:var(--muted);font-size:16px;margin-bottom:24px;">A2B answers one question: how does your customer get from their AI to your business? See yours in two minutes.</p>
+  <button class="btn em" style="font-size:16px;padding:14px 30px;" onclick="scrollToTopAndFocus()">Paste your URL — see your setup</button>
+</div></div>
+
+<div class="footer"><div class="wrap">
+  <div class="cols">
+    <div><div class="lenni-mark white" style="font-size:20px;">lenni<span class="dot"></span></div><div style="margin-top:6px;">The Agent-to-Business company.</div></div>
+    <div><b>Product</b><br>How it works · Industries · App Store · Security</div>
+    <div><b>Company</b><br>About · Built by a four-generation Texas operator family</div>
+    <div><span class="agent">agent manifest: /llms.txt · /llms.md</span></div>
+  </div>
+  <div style="border-top:1px solid #2c4160;padding-top:14px;font-size:11.5px;">Demo — © 2026 Lenni LLC · Convey by Lenni · Introductory only; never a credit decision.</div>
+</div></div>
+
+</section>
+
+<!-- ============================================================= -->
+<!-- VIEW 0b: THE LIBRARY, open before a scan and before an account -->
+<!-- ============================================================= -->
+<section class="view" id="v-library">
+  <div class="site-head"><div class="wrap"><div class="bar">
+    <div class="lenni-mark" style="font-size:26px;cursor:pointer;" onclick="go('v-home')">lenni<span class="dot"></span></div>
+    <span class="pill navy" style="margin-left:2px;">The Library</span>
+    <nav>
+      <a onclick="go('v-home')">← Back</a>
+      <a class="btn ghost sm" href="/login?next=%2Fconsole%2F" onclick="stashPendingBuild()">Log in</a>
+    </nav>
+  </div></div></div>
+
+  <div class="wrap libpub">
+    <div class="shead" style="text-align:left;max-width:760px;margin-left:0;">
+      <div class="k">Open to read — no scan, no account</div>
+      <h2>Every template and section we have written.</h2>
+      <p>This is what your services get matched against. Read the questions first: these are the
+      words a customer's AI will say, and every one of them becomes yours to edit the moment a
+      skill is seeded.</p>
+    </div>
+    <div class="libpub-tabs" id="libpub-tabs"></div>
+    <div id="libpub-body"></div>
+    <div class="libpub-foot">
+      <b>Seen enough?</b> Paste your website and we will match your services against all of it.
+      <button class="btn em sm" onclick="go('v-home');scrollToTopAndFocus()">Paste your URL →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- VIEW 0c: THE ACCOUNT — the person, not the company -->
+<!-- ============================================================= -->
+<section class="view" id="v-account">
+  <div class="site-head"><div class="wrap"><div class="bar">
+    <div class="lenni-mark" style="font-size:26px;cursor:pointer;" onclick="go('v-home')">lenni<span class="dot"></span></div>
+    <span class="pill navy" style="margin-left:2px;">Your account</span>
+    <nav>
+      <a onclick="acctBack()">← Back</a>
+      <a href="/logout">Log out</a>
+    </nav>
+  </div></div></div>
+
+  <div class="wrap acct">
+    <div class="shead" style="text-align:left;max-width:760px;margin-left:0;">
+      <div class="k">Your details</div>
+      <h2>This is you, not your company.</h2>
+      <p>Workspace settings — the bank's name, its services, its team — live inside each workspace.
+      What is here follows you across every one of them.</p>
+    </div>
+    <div id="acct-body"></div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- VIEW 1: SCANNING -->
+<!-- ============================================================= -->
+<section class="view" id="v-scan">
+  <div class="scanwrap">
+    <div class="scan-dot"></div>
+    <h2>Reading your website…</h2>
+    <div class="url" id="scan-url">bluebonnetbank.com</div>
+    <div class="scansteps" id="scan-steps">
+      <div class="scanstep"><div class="tick">✓</div><span>Crawling your pages</span></div>
+      <div class="scanstep"><div class="tick">✓</div><span>Extracting your service offerings</span></div>
+      <div class="scanstep"><div class="tick">✓</div><span>Detecting your industry</span></div>
+      <div class="scanstep"><div class="tick">✓</div><span>Matching offerings to the skill template library</span></div>
+      <div class="scanstep"><div class="tick">✓</div><span>Drafting your agent page &amp; llms.md header files</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- VIEW 2: CONFIRM INDUSTRY -->
+<!-- ============================================================= -->
+<section class="view" id="v-industry">
+  <div class="confwrap">
+    <div class="prog"><b>Step 1 of 2</b> · Confirm your industry &nbsp;→&nbsp; Confirm your services &nbsp;→&nbsp; Your workspace</div>
+    <div class="confcard">
+      <h2>Here's what we found.</h2>
+      <div class="sub" id="conf-sub">We read <b id="conf-url">bluebonnetbank.com</b> — reading your pages. First: did we get your industry right?</div>
+      <div class="indpick">
+        <div class="ic">🏦</div>
+        <div><b>Banking / Lending</b><span>Community bank · commercial &amp; consumer lending focus detected</span></div>
+        <div class="conf"><span class="pill live">96% match</span><div style="font-size:11px;color:var(--muted);margin-top:3px;">39 skill templates ready</div></div>
+      </div>
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:8px;">Not right? Pick your industry:</div>
+      <div class="indalt">
+        <button onclick="toast('Industry re-selection would re-run matching against that library — demo keeps Banking.')">Legal</button>
+        <button onclick="toast('Industry re-selection would re-run matching against that library — demo keeps Banking.')">Insurance</button>
+        <button onclick="toast('Industry re-selection would re-run matching against that library — demo keeps Banking.')">Real Estate</button>
+        <button onclick="toast('Industry re-selection would re-run matching against that library — demo keeps Banking.')">CPA / Tax</button>
+        <button onclick="toast('18 industries in the library — this list scrolls in production.')">More…</button>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button class="btn ghost" onclick="go('v-home')">← Back</button>
+        <button class="btn em" id="ind-yes" onclick="go('v-products')">Yes — Banking is right →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= -->
+<!-- VIEW 3: CONFIRM PRODUCTS -->
+<!-- ============================================================= -->
+<section class="view" id="v-products">
+  <div class="confwrap">
+    <div class="prog">Confirm your industry ✓ &nbsp;→&nbsp; <b>Step 2 of 2</b> · Confirm your services &nbsp;→&nbsp; Your workspace</div>
+    <div class="confcard">
+      <h2>Your services, matched to our library.</h2>
+      <div class="sub">Left: what your website says. Right: the skill template we'd seed for it. Uncheck anything you don't want. <b>We suggest — you confirm. Nothing is ever auto-bound.</b></div>
+      <div id="match-list"></div>
+      <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:18px;">
+        <span style="font-size:12.5px;color:var(--muted);" id="match-count"></span>
+        <div style="display:flex;gap:10px;">
+          <button class="btn ghost" onclick="go('v-industry')">← Back</button>
+          <button class="btn em" onclick="buildWorkspace()">Confirm &amp; build my workspace →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================= -->
+<!-- VIEW 4: WORKSPACE -->
+<!-- ============================================================= -->
+<section class="view" id="v-ws">
+<div class="ws">
+  <div class="ws-nav">
+    <div class="brand"><div class="lenni-mark white" style="font-size:20px;">lenni<span class="dot"></span></div></div>
+    <div class="tenant"><b id="ws-vendor">—</b><span id="ws-vendor-meta"></span></div>
+    <button class="nitem active" data-wsv="dash" onclick="wsGo('dash')">▦ <span class="lbl">My Products</span><span class="cnt" id="nav-prod-count">5</span></button>
+    <button class="nitem" data-wsv="store" onclick="wsGo('store')">◈ <span class="lbl">App Store</span></button>
+    <button class="nitem" data-wsv="agent" onclick="wsGo('agent')">🤖 <span class="lbl">Agent Page</span><span class="cnt">live</span></button>
+    <button class="nitem" data-wsv="site" onclick="wsGo('site');renderSite()">🌐 <span class="lbl">Website Preview</span></button>
+    <button class="nitem" data-wsv="team" onclick="wsGo('team')">👥 <span class="lbl">Team</span><span class="cnt" id="nav-team-count">0</span></button>
+    <button class="nitem" data-wsv="scan" onclick="wsGo('scan');initScanner()">🔎 <span class="lbl">Scan a Website</span><span class="cnt">new</span></button>
+    <button class="nitem" onclick="openPublicLibrary()">📚 <span class="lbl">The Library</span></button>
+    <button class="nitem" onclick="openAccount()">👤 <span class="lbl">My Account</span></button>
+    <button class="nitem" onclick="toast('Settings: billing, domains, Convey instance, security — out of demo scope.')">⚙ <span class="lbl">Settings</span></button>
+    <div class="spacer"></div>
+    <button class="nitem" onclick="toast('Funnel analytics: sessions in flight, per-section drop-off, completed packages — next build.')">📈 <span class="lbl">Analytics</span><span class="cnt">soon</span></button>
+    <div class="who"><div class="av" id="who-av" onclick="openAccount()" style="cursor:pointer;" title="Your account">—</div><div><b id="who-name" onclick="openAccount()" style="cursor:pointer;">—</b><span style="color:#7f95b3;"><span id="who-role">—</span> · <a onclick="openAccount()" style="text-decoration:underline;cursor:pointer;">account</a> · <a href="/logout" style="text-decoration:underline;cursor:pointer;">log out</a></span></div></div>
+  </div>
+
+  <div class="ws-main">
+    <!-- DASHBOARD -->
+    <div class="wsview on" data-wsv="dash">
+      <div class="ws-head"><div><h2>My Products<span class="sub">Every service you offer, as a skill customers run in their AI</span></h2></div>
+        <div class="acts"><button class="btn ghost sm" onclick="openPreview()">▶ Preview customer experience</button><button class="btn em sm" onclick="openAddProduct()">+ Add product</button></div></div>
+      <div class="ws-body">
+        <div class="statrow">
+          <div class="stat"><div class="n" id="st-total">5</div><div class="l">Products</div></div>
+          <div class="stat"><div class="n" id="st-pub">0</div><div class="l">Published skills</div></div>
+          <div class="stat"><div class="n">1</div><div class="l">Agent page (live)</div></div>
+          <div class="stat"><div class="n">—</div><div class="l">Sessions (goes live at publish)</div></div>
+        </div>
+        <div id="prod-list"></div>
+        <div class="addrow" id="add-row" onclick="openAddProduct()">+ Add another product from the library — or build a custom skill from scratch</div>
+      </div>
+    </div>
+
+    <!-- SKILL EDITOR -->
+    <div class="wsview" data-wsv="editor">
+      <div class="ws-body" style="padding-top:18px;">
+        <div class="ed-top">
+          <button class="back" onclick="wsGo('dash')">← Products</button>
+          <div><h2 id="ed-title">Multifamily Lending</h2><div class="meta" id="ed-meta"></div></div>
+          <div style="margin-left:auto;display:flex;gap:8px;">
+            <button class="btn ghost sm" onclick="openPreview()">▶ Preview</button>
+            <button class="btn ghost sm" onclick="saveDraft()">Save draft</button>
+            <button class="btn em sm" onclick="publishSkill()">Publish</button>
+          </div>
+        </div>
+        <div class="grid2" style="grid-template-columns:1.5fr 1fr;">
+          <div>
+            <div class="entrycard" id="entry-panel">
+              <div class="ek" style="cursor:pointer;margin-bottom:0;" onclick="togEntry()"><span id="entry-chev">▸</span> Entry prompt — your customer's opening message <span style="margin-left:auto;font-weight:500;font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0;">your wording, your questions, recompiled on every save</span></div>
+              <div id="entry-body" style="display:none;margin-top:10px;">
+                <div style="margin-bottom:10px;font-size:12px;">
+                  <label for="ed-entry-mode" style="display:block;margin-bottom:4px;"><b>What the link carries</b></label>
+                  <select id="ed-entry-mode" onchange="setEntryMode(this.value)" style="width:100%;padding:7px;border:1px solid var(--line);border-radius:7px;font-size:12px;">
+                    <option value="inline">Your whole intake in the link — nothing to fetch, works in every assistant</option>
+                    <option value="doc">Your published guide — no questions in the link, nothing for them to install</option>
+                    <option value="staged">Section 1 in the link — works even if their AI can't open pages</option>
+                  </select>
+                  <span id="ed-entry-mode-note" style="color:var(--muted);display:block;margin-top:5px;line-height:1.5;"></span>
+                </div>
+                <div id="ed-prompt-wrap">
+                  <div class="promptblock" id="ed-prompt"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;">
+                  <span style="font-size:11.5px;color:var(--muted);">Universal link: <span style="font-family:monospace;" id="ed-unilink">bluebonnetbank.com/start/…</span></span>
+                  <span style="display:flex;gap:6px;" id="ed-prompt-actions">
+                    <button class="btn ghost xs" onclick="editEntry()">✎ Edit wording</button>
+                    <button class="btn ghost xs" onclick="copyEmbed()" title="The head line and the button, ready to paste onto this product's page">Copy embed</button>
+                    <button class="btn ghost xs" onclick="copyDemo('Entry prompt copied — this is the exact text every start link carries.')">Copy prompt</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:9px;">SECTIONS — your customer's AI walks these in order. <b>Click one to see exactly what it says and asks.</b></div>
+            <div id="sec-list"></div>
+            <div class="addrow" onclick="openLibrary()">＋ Add from the Library — pre-drafted sections &amp; apps</div>
+            <div id="dest-panel"></div>
+          </div>
+          <div class="ed-side">
+            <div class="card">
+              <h4>Template</h4>
+              <div class="kv"><span>Seeded from</span><span id="ed-tmpl">uw-multifamily-perm</span></div>
+              <div class="kv"><span>Pinned version</span><span id="ed-pinned">—</span></div>
+              <div class="kv"><span>Lenni current</span><span id="ed-current">—</span></div>
+              <div class="kv"><span>Your version</span><span id="ed-ver">—</span></div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:8px;">We never rewrite what you publish. When a template update ships, you'll see it here — taking it is your call.</div>
+            </div>
+            <div class="card">
+              <h4>Publish &amp; share</h4>
+              <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--em-d);font-weight:800;margin-bottom:7px;">Start links — for your website page</div>
+              <div id="start-links" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;"></div>
+              <div class="qr"><canvas id="qr" width="92" height="92"></canvas>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <button class="btn ghost xs" onclick="toast('QR downloads as SVG/PNG — lobby signage, mailers, business cards.')">Download QR</button>
+                  <span style="font-size:10.5px;color:var(--muted);">One link, every terminal — opens with your first section, then walks the rest.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP STORE -->
+    <div class="wsview" data-wsv="store">
+      <div class="ws-head"><div><h2>App Store<span class="sub">Capabilities you plug into your skills' sections</span></h2></div></div>
+      <div class="ws-body"><div class="appgrid" id="store-grid"></div></div>
+    </div>
+
+    <!-- AGENT PAGE -->
+    <div class="wsview" data-wsv="agent">
+      <div class="ws-head"><div><h2>Your Agent Page<span class="sub">The page AI assistants read — pin it in your website header</span></h2></div>
+        <div class="acts"><button class="btn ghost sm" onclick="copyAgentUrl()">Copy URL</button><button class="btn em sm" onclick="copyHeaderSnippet()">Copy header snippet</button></div></div>
+      <div class="ws-body">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">When an AI agent finds <b id="ap-intro-site">your site</b>, it doesn't have to dig through every page. This page tells it what you are, every service you offer, and exactly how to start each one. <b>Regenerates automatically every time you publish.</b></div>
+        <div class="agentpage">
+          <div class="ap-bar">🌐 <b id="ap-url">—</b> · llms.txt · llms.md · MCP endpoint <span style="margin-left:auto;" class="pill live">LIVE</span></div>
+          <div class="ap-body">
+            <h3 style="margin-bottom:4px;" id="ap-name">—</h3>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:16px;"><span id="ap-desc"></span> — <i>this summary is written for agents, from your confirmed profile.</i></div>
+            <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--em-d);font-weight:800;margin-bottom:8px;">Services an agent can run</div>
+            <div id="agent-svcs"></div>
+            <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--em-d);font-weight:800;margin:16px 0 8px;">The header files (llms.md)</div>
+            <div class="llmsblock" id="llms-block"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEBSITE PREVIEW -->
+    <div class="wsview" data-wsv="site">
+      <div class="ws-head"><div><h2>Website Preview<span class="sub">What <span id="site-sub-host">your site</span> looks like after you add the links and the header — nothing else changes</span></h2></div>
+        <div class="acts"><button class="btn ghost sm" onclick="copyDemo('Webmaster packet copied: one header line + one link per page. Total change: minutes, not a project.')">Copy webmaster packet</button></div></div>
+      <div class="ws-body" id="site-prev"></div>
+    </div>
+
+    <!-- TEAM -->
+    <div class="wsview" data-wsv="team">
+      <div class="ws-head"><div><h2>Team<span class="sub">Who can manage <span id="team-sub-vendor">this</span>'s machine</span></h2></div>
+        <div class="acts"><button class="btn em sm" onclick="addMember()">+ Invite member</button></div></div>
+      <div class="ws-body">
+        <div id="team-list"></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:12px;">Roles: Admin · Editor · Viewer. Convey loan-officer seats are managed in your Convey instance, separately.</div>
+      </div>
+    </div>
+
+    <!-- SCAN A WEBSITE -->
+    <div class="wsview" data-wsv="scan">
+      <div class="ws-head">
+        <div><h2>Scan a Website<span class="sub">Read a real business site and see the product page it would give them</span></h2></div>
+      </div>
+      <div class="ws-body">
+        <div class="scan-entry">
+          <input id="scan-site-url" type="text" placeholder="bank.com — or pick one below" onkeydown="if(event.key==='Enter')runScan()">
+          <button class="btn em" id="scan-go" onclick="runScan()">Scan site</button>
+        </div>
+        <div class="scan-note">Reads their homepage and up to five product pages. Nothing is saved and no workspace is created — this only shows what we would find.</div>
+        <div id="scan-shortlist" class="scan-picks"></div>
+        <div id="scan-out"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- WS-MARKER2 -->
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+
+<script src="app.js"></script>
+</body>
+</html>

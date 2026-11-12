@@ -1,0 +1,298 @@
+# Banking skill templates.
+#
+# Lenni authors these. Vendors NEVER edit them — seeding copies a template at
+# its current version into a vendor_skill and pins it. Shipping 1.1 here does
+# not move a vendor who seeded at 1.0. See docs/MODEL_RULES.md rule 1.
+#
+# `core: banking` pulls the collateral -> deal -> borrower set from
+# core_sections.yaml. `overrides` tunes a core section for this product;
+# `extra_sections` appends product-specific ones after the core.
+#
+# Bump `version` and add a changelog entry for ANY change to section content.
+# The version string is what gets pinned, so an unversioned edit silently
+# changes what new vendors seed while claiming to be the same template.
+
+templates:
+  - id: uw-multifamily-perm
+    version: "1.0"
+    name: Multifamily Permanent
+    product_key: uw-multifamily-perm
+    core: banking
+    overrides:
+      Collateral:
+        summary: The property — units, occupancy, income
+        asks_append:
+          - How many units, and what's the occupancy today?
+          - Is there a rent roll and a trailing-12 you can share later?
+        collects_append: [unit count, occupancy, rent roll status]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release. Core banking sections with multifamily collateral detail.
+
+  - id: uw-cre-owner-occupied
+    version: "1.0"
+    name: Owner-Occupied CRE
+    product_key: uw-cre-owner-occupied
+    core: banking
+    overrides:
+      Collateral:
+        asks_append:
+          - Will your business occupy the building, and roughly what percentage of it?
+        collects_append: [occupancy percentage]
+    extra_sections:
+      - name: Business financials
+        summary: The operating company carries this loan
+        apps: [doc-checklist]
+        says: >-
+          Since the business carries this loan, let's talk about the books — no
+          judgment, banks just need to know what exists.
+        asks:
+          - Who keeps your books — CPA-prepared, internal, or returns only?
+          - Last full year revenue and rough net? (documents will confirm)
+          - Any concentrations — one big customer, seasonal swings?
+        collects: [books state, revenue stated, concentration flags]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release. Adds business financials after the core.
+
+  - id: uw-cre-investment
+    version: "1.0"
+    name: Investment CRE
+    product_key: uw-cre-investment
+    core: banking
+    overrides:
+      Collateral:
+        asks_append:
+          - Who are the tenants, and what do the leases look like?
+        collects_append: [tenant roster, lease terms]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: uw-construction-residential
+    version: "1.0"
+    name: Residential Construction (1-4)
+    product_key: uw-construction-residential
+    core: banking
+    extra_sections:
+      - name: Construction budget & draws
+        summary: Budget, contingency, GC, draw expectations
+        apps: [doc-checklist]
+        says: Construction deals are won in the budget. Let's build yours so the bank sees a plan, not a guess.
+        asks:
+          - Total budget — hard vs soft costs? Contingency percentage?
+          - Who's the GC — and have they built with a bank draw process before?
+          - How do you expect draws to run?
+        collects: [budget breakdown, GC identity & history, draw expectations]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: uw-construction-commercial
+    version: "1.0"
+    name: Commercial Construction
+    product_key: uw-construction-commercial
+    core: banking
+    extra_sections:
+      - name: Construction budget & draws
+        summary: Budget, contingency, GC, draw expectations
+        apps: [doc-checklist]
+        says: Commercial construction lives or dies on the budget and the draw plan.
+        asks:
+          - Total project budget — hard vs soft, contingency?
+          - Who is the general contractor and what have they delivered at this scale?
+          - What does the draw schedule look like, and who inspects?
+        collects: [budget breakdown, GC history, draw & inspection plan]
+      - name: Lease-up & exit
+        summary: How the project stabilizes
+        apps: []
+        says: Banks want to know what happens after the building is finished.
+        asks:
+          - Any signed leases or letters of intent yet?
+          - Is the exit a sale or permanent financing?
+        collects: [preleasing, exit plan]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: uw-ci-general
+    version: "1.0"
+    name: General C&I
+    product_key: uw-ci-general
+    core: banking
+    overrides:
+      Collateral:
+        name: Collateral
+        summary: What secures the line — receivables, equipment, or blanket
+        says: >-
+          Let's start with what secures the facility. For a business line that
+          is often receivables and equipment rather than a building.
+        asks:
+          - What would secure this — receivables, inventory, equipment, real estate, or a blanket lien?
+          - Roughly what are those assets worth today?
+          - Any existing liens on them?
+        collects: [collateral type, stated value, existing liens]
+    extra_sections:
+      - name: Business financials
+        summary: P&L, balance sheet, interims, A/R
+        apps: [doc-checklist]
+        says: Since the business carries this facility, let's talk about the books.
+        asks:
+          - Who keeps your books — CPA-prepared, internal, or returns only?
+          - Last full year revenue and rough net?
+          - Any concentrations — one big customer, seasonal swings?
+        collects: [books state, revenue stated, concentration flags]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release. Collateral section reframed off real property.
+
+  - id: uw-sba
+    version: "1.0"
+    name: SBA 7(a) / 504
+    product_key: uw-sba
+    core: banking
+    extra_sections:
+      - name: SBA eligibility
+        summary: Size standard, use of proceeds, citizenship
+        apps: [doc-checklist]
+        says: >-
+          SBA has its own eligibility rules on top of the bank's. Let's clear
+          those first so nothing surprises you later.
+        asks:
+          - How many employees, and what's annual revenue? (size standard)
+          - What exactly will the proceeds fund?
+          - Are all owners of 20% or more US citizens or lawful permanent residents?
+        collects: [size standard inputs, use of proceeds, ownership eligibility]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: uw-consumer-auto
+    version: "1.0"
+    name: Consumer Auto
+    product_key: uw-consumer-auto
+    core: banking
+    overrides:
+      Collateral:
+        name: Vehicle
+        summary: The vehicle being financed
+        says: Let's start with the vehicle — everything else follows from it.
+        asks:
+          - What's the vehicle — year, make, model, mileage?
+          - Buying new, used, or refinancing something you already own?
+          - What's the price, or the payoff if this is a refinance?
+        collects: [vehicle detail, purchase type, price or payoff]
+      Deal:
+        asks_append: []
+      Borrower:
+        summary: Who's borrowing
+        asks:
+          - Who's on the loan — just you, or a co-borrower?
+          - Where do you work, and roughly what's your monthly income?
+          - "Documents: ID, proof of income, insurance."
+        collects: [applicants, income basis, document manifest]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release. Collateral becomes Vehicle; borrower section simplified.
+
+  - id: uw-residential-conventional
+    version: "1.0"
+    name: Conventional Residential
+    product_key: uw-residential-conventional
+    core: banking
+    overrides:
+      Collateral:
+        name: Property
+        summary: The home being financed
+        asks_append:
+          - Will you live in it, or is it a second home or rental?
+        collects_append: [occupancy intent]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: uw-residential-heloc
+    version: "1.0"
+    name: HELOC
+    product_key: uw-residential-heloc
+    core: banking
+    overrides:
+      Collateral:
+        name: Property
+        summary: The home the line is drawn against
+        asks:
+          - What's the property address?
+          - What do you think it's worth, and what's the mortgage balance?
+          - Is it your primary residence?
+        collects: [address, value & first lien balance, occupancy]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: uw-farmland
+    version: "1.0"
+    name: Farmland
+    product_key: uw-farmland
+    core: banking
+    overrides:
+      Collateral:
+        name: Land
+        summary: Acreage, use, water, improvements
+        asks:
+          - Where is the land, how many acres, and what's the county?
+          - What's it used for — row crop, pasture, timber, recreation?
+          - Water rights, irrigation, or improvements we should note?
+        collects: [acreage & county, land use, water & improvements]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: uw-ag-operating
+    version: "1.0"
+    name: Ag Operating
+    product_key: uw-ag-operating
+    core: banking
+    overrides:
+      Collateral:
+        name: Operation
+        summary: Crops, livestock, equipment securing the line
+        says: Operating lines are secured by the operation itself, so let's start there.
+        asks:
+          - What do you run — crops, livestock, or both? How many acres or head?
+          - What equipment do you own outright?
+          - Any existing liens from another lender?
+        collects: [operation profile, equipment, existing liens]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: uw-equipment
+    version: "1.0"
+    name: Equipment Finance
+    product_key: uw-equipment
+    core: banking
+    overrides:
+      Collateral:
+        name: Equipment
+        summary: The equipment being financed
+        asks:
+          - What equipment — make, model, new or used?
+          - Who's the vendor, and do you have a quote?
+          - What will it be used for?
+        collects: [equipment detail, vendor quote, use case]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.

@@ -1,0 +1,25 @@
+[Unit]
+Description=Cloudflare quick tunnel publishing the A2B console over HTTPS
+Documentation=https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+After=network-online.target nginx.service a2b-api.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Root, because it rewrites /etc/a2b/a2b.env and restarts a2b-api when
+# Cloudflare hands out a new hostname.
+ExecStart=/opt/a2b/deploy/tunnel.sh
+
+Restart=always
+RestartSec=5
+# A quick tunnel reconnects on its own; a restart loop here usually means
+# cloudflared cannot reach Cloudflare at all, so back off rather than hammer it.
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=a2b-tunnel
+
+[Install]
+WantedBy=multi-user.target

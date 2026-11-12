@@ -1,0 +1,658 @@
+# Core section sets, per industry.
+#
+# Core sections anchor every skill in an industry and cannot be removed by a
+# vendor — they can be edited freely, reordered is allowed, but delete is
+# refused. For banking the core is collateral -> deal -> borrower, in that
+# order, because everything in a credit file hangs off the asset.
+#
+# `says` is the opening line the customer's AI delivers. `asks` are the
+# questions, in order, one per card in the editor. `collects` is the internal
+# schema note — vendors never see it, the runtime uses it to decide whether a
+# section is complete.
+
+banking:
+  - name: Collateral
+    summary: What they're financing — stages A-D
+    apps: [doc-checklist, property-eval]
+    says: >-
+      We're going to build your loan package in three parts: the property, the
+      money and terms, then you. We start with the property, because everything
+      else hangs on it. If you don't know something, say so — we'll mark it and
+      keep moving.
+    asks:
+      - Where is the property? Address and county — or parcel / legal description if there's no address yet.
+      - What is it today, and what do you plan to do with it? Buy and hold, build, renovate, refinance…
+      - Do you own it or have it under contract? Purchase price? Any existing debt on it?
+      - What's your sense of its value — and what's that based on?
+    collects:
+      - address & county
+      - asset class & intent
+      - control status & price
+      - stated value
+      - rent roll / T-12 if operating
+
+  - name: Deal
+    summary: Funds & terms — calculator scenarios
+    apps: [loan-calculator]
+    says: >-
+      Property's pinned down. Now the money: what are you trying to borrow, what
+      will it fund, and how long do you want to carry it? Not sure about terms?
+      Normal — I'll show you payment scenarios and you react.
+    asks:
+      - What's the loan for, and how much do you need?
+      - How much cash are you bringing to close?
+      - Want to see payment scenarios? (illustrative only — the bank prices)
+      - How does the bank get paid back — and if this is a build or bridge, what's the exit?
+    collects:
+      - purpose & uses
+      - amount & equity
+      - structure choice from scenarios
+      - repayment source
+
+  - name: Borrower
+    summary: Who's borrowing — docs & assembly
+    apps: [doc-checklist, id-verify, artifact]
+    says: >-
+      Last part — you. The bank underwrites the property, the deal, and the
+      people behind it. Anything sensitive travels through the secure channel,
+      never this chat.
+    asks:
+      - Who's borrowing — you personally, or an entity? Who owns it, roughly by percentage?
+      - What's your experience with deals like this? Anything in your credit history the bank should hear from you first?
+      - What carries the payment — property income, business cash flow, or both?
+      - "Time to gather documents: 2 years returns, ID, personal financial statement (I'll help draft it), 2 months statements, property schedule."
+    collects:
+      - entity tree & guarantors
+      - experience narrative
+      - capacity basis
+      - document manifest -> zero gaps
+
+legal:
+  - name: Matter intake
+    summary: What the matter is and who is involved
+    apps: [doc-checklist]
+    says: >-
+      Let's capture the matter properly before we take up the attorney's time —
+      it usually saves a full meeting.
+    asks:
+      - What brings you in — describe the matter in your own words.
+      - Who are the parties involved on your side?
+      - What outcome are you hoping for, and is there a deadline driving it?
+    collects: [matter type, party list, desired outcome, timing]
+
+  - name: Conflict check
+    summary: The gate every firm runs before work starts
+    apps: [id-verify]
+    says: >-
+      Before we go further, the firm runs a quick conflict check — standard for
+      every matter.
+    asks:
+      - Full legal names of all parties on your side
+      - Names of parties on the other side of the matter
+    collects: [party names both sides, matter type]
+
+  - name: Engagement & documents
+    summary: Scope, documents and secure delivery
+    apps: [doc-checklist, artifact]
+    says: >-
+      Last part — the documents the firm needs to open the matter. Nothing
+      sensitive travels through this chat.
+    asks:
+      - What documents do you already have for this matter?
+      - Who should be on correspondence?
+    collects: [document manifest, contacts]
+
+insurance:
+  - name: Coverage needs
+    summary: What they're protecting and what changed
+    apps: [doc-checklist]
+    says: Let's map what you're protecting — property, people, operations — and what's changing.
+    asks:
+      - What are we insuring — property, vehicles, operations, people?
+      - Current carriers and renewal dates?
+      - What changed — new purchase, new venture, claim?
+    collects: [exposure map, current coverage, change driver]
+
+  - name: Claims history
+    summary: The five-year lookback every carrier asks for
+    apps: []
+    says: Carriers will ask about the last five years — better to have it organized on the first pass.
+    asks:
+      - Any claims in the last five years? Type, year, rough amount
+      - Any open claims right now?
+    collects: [claims lookback, open claims]
+
+  - name: Quote assembly
+    summary: Package the submission
+    apps: [artifact, doc-checklist]
+    says: That's enough to put a real submission together. Let me assemble it.
+    asks:
+      - Anything else the underwriter should know up front?
+    collects: [submission notes, document manifest]
+
+real_estate:
+  - name: Buyer intake
+    summary: Budget, criteria, timeline
+    apps: [doc-checklist]
+    says: Let's get you properly represented — a few questions so the search starts sharp, not scattershot.
+    asks:
+      - Price range and how it's funded — cash, financing, pre-approved?
+      - Areas and property types on your list?
+      - Timeline — and anything that has to sell first?
+    collects: [budget & funding, search criteria, timeline & contingencies]
+
+  - name: Representation & next steps
+    summary: Agreement and handoff
+    apps: [artifact]
+    says: Last piece — the paperwork that makes the representation official.
+    asks:
+      - Who else is on the decision with you?
+      - Best way and time to reach you?
+    collects: [decision makers, contact preference]
+
+cpa_tax:
+  - name: Tax organizer
+    summary: Filing status, income sources, life changes
+    apps: [doc-checklist]
+    says: >-
+      Tax season without the shoebox: I'll walk you through what your CPA needs,
+      then everything uploads securely.
+    asks:
+      - Filing status and dependents — any changes this year?
+      - Income sources — W-2, business, rentals, investments?
+      - Big events — property bought/sold, entity formed, moved states?
+    collects: [filing profile, income map, change events]
+
+  - name: Books & records
+    summary: Sets scope for cleanup vs compile vs advisory
+    apps: []
+    says: No judgment — the firm just needs to know what exists before quoting the work.
+    asks:
+      - What software (or spreadsheets, or drawer)?
+      - Reconciled through when?
+      - Who touches the books today?
+    collects: [system state, reconciliation date, bookkeeper map]
+
+  - name: Document assembly
+    summary: Manifest and secure delivery
+    apps: [doc-checklist, artifact]
+    says: Last step — the documents themselves, uploaded securely rather than emailed.
+    asks:
+      - Which documents do you already have in hand?
+    collects: [document manifest]
+
+mortgage_broker:
+  - name: Property & purpose
+    summary: What they're buying or refinancing
+    apps: [property-eval, doc-checklist]
+    says: >-
+      Let's get your file ready before we shop it. Three parts: the property,
+      the money, then you. If you don't know something, say so and we'll mark it.
+    asks:
+      - Are you buying, refinancing, or pulling equity out?
+      - Where is the property, and what type is it — single family, condo, 2-4 unit, investment?
+      - Will you live in it, rent it, or use it part of the year?
+      - Purchase price or your sense of current value, and what that's based on?
+    collects: [transaction type, address & property type, occupancy, price or value]
+
+  - name: Loan & terms
+    summary: Amount, down payment, scenarios
+    apps: [loan-calculator]
+    says: >-
+      Now the money. I'll show you payment scenarios so you can react to real
+      numbers — illustrative only, since the lender prices the loan.
+    asks:
+      - How much are you looking to borrow, and how much are you putting down?
+      - Where are the funds coming from — savings, sale, gift, retirement?
+      - Fixed or adjustable, and how long do you plan to keep the property?
+      - Any timing pressure — a contract date, a rate lock, a lease ending?
+    collects: [amount & down payment, source of funds, term preference, timeline]
+
+  - name: Borrower & documents
+    summary: Income, credit and the document list
+    apps: [doc-checklist, id-verify, artifact]
+    says: >-
+      Last part — you. Lenders underwrite income, assets and credit. Anything
+      sensitive travels through the secure channel, never this chat.
+    asks:
+      - How are you paid — W-2, self-employed, commission, retired, or a mix?
+      - Anything in your credit history a lender should hear from you first?
+      - Who else is on the loan with you?
+      - "Documents to gather: 2 years returns and W-2s, 30 days pay stubs, 2 months statements, ID."
+    collects: [income type, credit disclosures, co-borrowers, document manifest]
+
+title_escrow:
+  - name: The closing
+    summary: Property, parties and the deadline
+    apps: [doc-checklist]
+    says: >-
+      Let's open the file properly. Most closings that go sideways do it because
+      something on this list showed up late.
+    asks:
+      - What's the property address, and is this a purchase, refinance or commercial closing?
+      - What's the closing date, and is it firm?
+      - Who are the parties — buyer, seller, borrower, lender — and who is representing them?
+      - Is there a contract or commitment letter already signed?
+    collects: [address, transaction type, closing date, party list, contract status]
+
+  - name: Title & payoffs
+    summary: What has to be cleared before closing
+    apps: []
+    says: >-
+      Now the part that takes the time: anything recorded against the property
+      that has to be dealt with before it can transfer cleanly.
+    asks:
+      - Are there existing loans to pay off, and do you know the lenders?
+      - Any liens, judgments, unpaid taxes or HOA dues you're aware of?
+      - Any survey, prior title policy or existing easements you can share?
+      - Is anyone on title who isn't part of this transaction — an ex-spouse, an estate, a partner?
+    collects: [payoff list, known encumbrances, survey & prior policy, title vesting issues]
+
+  - name: Funds & delivery
+    summary: How money and documents move
+    apps: [doc-checklist, artifact, convey-link]
+    says: >-
+      Last part — how funds and signatures move. Wire details are never sent or
+      confirmed over chat or email, only through the secure channel.
+    asks:
+      - How are you bringing funds — wire, or financed through the lender?
+      - Will you sign in person, by mobile notary, or remotely?
+      - Who should receive the closing documents, and where?
+    collects: [funding method, signing preference, delivery contacts, document manifest]
+
+property_mgmt:
+  - name: Property & your role
+    summary: Which property, and which side of it they're on
+    apps: [doc-checklist]
+    says: >-
+      Let's start with the property and where you sit — owner, tenant or board.
+      The rest of the questions follow from that.
+    asks:
+      - Which property, and are you the owner, a tenant, or on an HOA board?
+      - What type is it — single family, small multifamily, apartment community, HOA, commercial?
+      - How many units, and how many are occupied today?
+      - What prompted this — new management, a move, a renewal, a problem?
+    collects: [property & role, property type, unit & occupancy count, reason]
+
+  - name: Terms & money
+    summary: Rent, fees, deposits, who pays what
+    apps: []
+    says: >-
+      Now the money side. Getting this straight up front is what stops the
+      arguments later.
+    asks:
+      - What's the current rent or management fee arrangement?
+      - Who pays which utilities, and are there deposits or reserves held?
+      - Are there existing leases or vendor contracts in place, and when do they end?
+      - Anything outstanding — arrears, unpaid invoices, a pending dispute?
+    collects: [rent & fees, utility split, existing agreements, outstanding balances]
+
+  - name: People & documents
+    summary: Contacts, access and paperwork
+    apps: [doc-checklist, artifact, id-verify]
+    says: >-
+      Last part — who to contact and what paperwork exists. Anything with bank
+      details or ID goes through the secure channel, not this chat.
+    asks:
+      - Who should we contact for decisions, and who for emergencies?
+      - Who has keys, codes or access today?
+      - "Documents to gather: leases, insurance certificate, ID, and any owner statements or HOA rules."
+    collects: [contacts, access holders, document manifest]
+
+wealth_ria:
+  - name: Household & goals
+    summary: Who the money is for and what it's for
+    apps: [doc-checklist]
+    says: >-
+      Let's start with the household and what you want the money to do. No
+      account numbers or balances in this chat — ranges are plenty here.
+    asks:
+      - Who's in the household, and who else is part of these decisions?
+      - What are you trying to accomplish — retirement, income, education, a business exit, an estate?
+      - What's your rough timeline for the biggest of those?
+      - What prompted you to look now?
+    collects: [household map, goal set, time horizon, trigger event]
+
+  - name: Current picture
+    summary: Accounts, income and risk, in ranges
+    apps: []
+    says: >-
+      Now a rough picture of what's there today. Ranges only — the exact
+      statements come through the secure channel later.
+    asks:
+      - What types of accounts exist — 401(k), IRA, brokerage, business, trust, real estate?
+      - Roughly what range are we talking about in total?
+      - What's coming in and going out each month, roughly?
+      - How did you feel the last time the market dropped sharply?
+    collects: [account types, asset range, cash flow, risk temperament]
+
+  - name: Advisors & documents
+    summary: The other professionals, and what to gather
+    apps: [doc-checklist, artifact, id-verify]
+    says: >-
+      Last part — who else advises you, and the paperwork. Nothing sensitive
+      travels through this chat.
+    asks:
+      - Do you have a CPA, attorney or insurance agent we should coordinate with?
+      - Is there an existing will, trust or beneficiary setup?
+      - Are you moving accounts from another firm?
+      - "Documents to gather: recent statements, tax return, ID, and any trust or estate documents."
+    collects: [professional network, estate documents, transfer intent, document manifest]
+
+healthcare:
+  - name: Who we're seeing
+    summary: Identity, contact and the reason in plain terms
+    apps: [doc-checklist]
+    says: >-
+      Let's get you registered before your visit. Keep clinical detail brief
+      here — describe it in a sentence, and save the specifics for the clinician.
+      Nothing medical should sit in a chat transcript.
+    asks:
+      - Who is the appointment for, and what's their date of birth?
+      - Best phone and email for appointment reminders?
+      - In a sentence, what brings you in?
+      - Is this a new problem, a follow-up, or a routine visit?
+    collects: [patient identity, contact details, reason in brief, visit type]
+
+  - name: Insurance & referral
+    summary: Coverage and how they got here
+    apps: []
+    says: >-
+      Now the coverage side, so nobody is surprised by a bill. Don't type card
+      numbers here — the carrier name is enough for now.
+    asks:
+      - Who is the insurance carrier, and is the patient the policy holder?
+      - Were you referred, and by whom?
+      - Do you know whether this needs prior authorisation?
+      - Have you been seen at this practice before?
+    collects: [carrier & policy holder, referral source, prior auth status, existing patient]
+
+  - name: Records & forms
+    summary: What to bring and where it goes
+    apps: [doc-checklist, artifact, id-verify, convey-link]
+    says: >-
+      Last part — the paperwork. Records, ID and insurance cards go through the
+      practice's secure channel, never through this chat or by email.
+    asks:
+      - Are there records or imaging from another provider to request?
+      - Any medications or allergies the clinician should have on file before the visit?
+      - Who may we share information with — a spouse, a parent, a caregiver?
+      - "To bring: ID, insurance card, medication list, and any records release forms."
+    collects: [records to request, medication & allergy flags, disclosure consent, document manifest]
+
+dental:
+  - name: New patient
+    summary: Identity, contact, reason for the visit
+    apps: [doc-checklist]
+    says: >-
+      Let's get you set up before your appointment. Keep clinical detail short
+      here and save the specifics for the dentist.
+    asks:
+      - Who is the appointment for, and what's their date of birth?
+      - Best phone and email for reminders?
+      - What brings you in — a cleaning, a specific tooth, pain, or a second opinion?
+      - When was your last dental visit, roughly?
+    collects: [patient identity, contact details, reason, last visit]
+
+  - name: Insurance & history
+    summary: Coverage and anything the dentist should know
+    apps: []
+    says: >-
+      Now coverage and history. Carrier name only — no card numbers in this
+      chat.
+    asks:
+      - Do you have dental insurance, and with which carrier?
+      - Any dental work in progress or recently completed elsewhere?
+      - Anything that makes dental visits difficult — anxiety, gag reflex, past bad experience?
+      - Any medical conditions or medications the dentist should know about?
+    collects: [carrier, work in progress, comfort flags, medical flags]
+
+  - name: Records & forms
+    summary: Transfers, X-rays and paperwork
+    apps: [doc-checklist, artifact, convey-link]
+    says: >-
+      Last part — paperwork. Records and insurance details go through the
+      practice's secure channel rather than this chat.
+    asks:
+      - Should we request records or X-rays from a previous dentist?
+      - Who may we share appointment and treatment information with?
+      - "To bring: ID, insurance card, and a list of current medications."
+    collects: [records to request, disclosure consent, document manifest]
+
+veterinary:
+  - name: Your pet
+    summary: The animal, and why they're coming in
+    apps: [doc-checklist]
+    says: >-
+      Let's get your pet registered. If this is an emergency, stop here and call
+      the clinic directly rather than typing.
+    asks:
+      - What's your pet's name, species and breed?
+      - How old are they, and roughly what do they weigh?
+      - What brings them in — a check-up, vaccines, a specific problem?
+      - Are they spayed or neutered?
+    collects: [pet identity, age & weight, reason, altered status]
+
+  - name: History & care
+    summary: Vaccines, medications, previous clinic
+    apps: []
+    says: >-
+      Now their history, so the vet isn't starting from nothing.
+    asks:
+      - Have they been seen at another clinic, and can we request those records?
+      - Are they up to date on vaccines, and on any parasite prevention?
+      - Any medications, allergies or ongoing conditions?
+      - Any changes in eating, drinking, energy or behaviour lately?
+    collects: [previous clinic, vaccine status, medications & conditions, change flags]
+
+  - name: Owner & consent
+    summary: Contact, authority and paperwork
+    apps: [doc-checklist, artifact, id-verify]
+    says: >-
+      Last part — you. Payment details never travel through this chat.
+    asks:
+      - Best phone to reach you during the appointment?
+      - Who else may authorise care for this pet?
+      - Is there a spending limit you'd want a call about before treatment?
+      - Are they insured, and with whom?
+    collects: [owner contact, authorised parties, treatment threshold, pet insurance]
+
+hr_peo:
+  - name: The organisation
+    summary: Who the employer is and what they need
+    apps: [doc-checklist]
+    says: >-
+      Let's map the organisation before we get into people. This is the part
+      that decides what actually has to be set up.
+    asks:
+      - What's the legal entity name, and which states do you have employees in?
+      - How many employees today — and split between full-time, part-time and contractors?
+      - What are you looking for — full PEO, payroll only, benefits, or HR support?
+      - What's driving the timing — a renewal, a growth push, an audit, a problem?
+    collects: [entity & states, headcount mix, service scope, timing driver]
+
+  - name: Payroll & benefits today
+    summary: What exists now and what it costs
+    apps: []
+    says: >-
+      Now what's already in place. Don't paste account numbers or employee
+      details here — the counts and carriers are enough.
+    asks:
+      - Who runs payroll today, and how often do you pay?
+      - What benefits are offered now, and with which carriers?
+      - Do you have workers' comp coverage, and any open claims?
+      - Is there a handbook, and when was it last updated?
+    collects: [payroll system & frequency, benefit carriers, comp status, policy state]
+
+  - name: People & documents
+    summary: Contacts, compliance and what to gather
+    apps: [doc-checklist, artifact, id-verify, convey-link]
+    says: >-
+      Last part — contacts and paperwork. Anything with employee data goes
+      through the secure channel, never this chat.
+    asks:
+      - Who is our main contact, and who signs?
+      - Any open HR matters we should know about — a leave, a claim, a dispute?
+      - Any compliance obligations specific to you — union, government contracts, regulated industry?
+      - "Documents to gather: current payroll register summary, benefit summaries, handbook, and the last workers' comp policy."
+    collects: [contacts & signer, open matters, compliance obligations, document manifest]
+
+construction:
+  - name: The project
+    summary: Scope, site and what stage it's at
+    apps: [doc-checklist, property-eval]
+    says: >-
+      Let's scope this properly. Three parts: the project, the money and
+      schedule, then the paperwork. Say so if something isn't decided yet.
+    asks:
+      - Where is the project, and what is it — new build, addition, renovation, tenant finish?
+      - What stage is it at — an idea, drawings, permitted, out to bid?
+      - Rough size — square footage, unit count, or scope in your own words?
+      - Who else is involved — architect, engineer, owner's rep, existing GC?
+    collects: [site & project type, stage, size, project team]
+
+  - name: Budget & schedule
+    summary: Money, dates and how it's funded
+    apps: [loan-calculator]
+    says: >-
+      Now budget and timing. A range is fine — pretending to a number nobody
+      believes helps neither of us.
+    asks:
+      - What's the budget range you're working to?
+      - When do you need to start, and when does it have to be finished?
+      - How is it funded — cash, construction loan, owner financing?
+      - Is there a hard date driving this — a lease, a season, a permit expiry?
+    collects: [budget range, start & completion dates, funding source, fixed constraints]
+
+  - name: Contract & documents
+    summary: Delivery method and paperwork
+    apps: [doc-checklist, artifact]
+    says: >-
+      Last part — how the job gets papered. Insurance certificates and financial
+      details go through the secure channel.
+    asks:
+      - What delivery method do you expect — lump sum, cost plus, design build?
+      - Do you have drawings, a survey, geotech or a permit set already?
+      - Are there bonding or insurance requirements on this job?
+      - Who signs, and who approves change orders?
+    collects: [delivery method, available drawings, bonding & insurance, signing authority]
+
+architecture_engineering:
+  - name: Project & site
+    summary: What they want built and where
+    apps: [property-eval, doc-checklist]
+    says: >-
+      Let's get the project defined before anyone draws anything. What it is,
+      where it is, and what has to be true about it.
+    asks:
+      - What are you looking to build or change, in your own words?
+      - Where is the site, and do you own or control it yet?
+      - What's the intended use, and roughly what size?
+      - Is there an existing building, and do you have drawings of it?
+    collects: [project description, site & control, use & size, existing conditions]
+
+  - name: Programme & constraints
+    summary: Requirements, approvals and the schedule
+    apps: []
+    says: >-
+      Now the requirements and anything that limits them — zoning, budget,
+      dates. Constraints found now are cheap.
+    asks:
+      - What has to fit in it — rooms, units, staff, equipment, parking?
+      - What's the construction budget you're designing to?
+      - Do you know the zoning, and has anyone talked to the jurisdiction yet?
+      - What dates matter — permit, start, occupancy?
+    collects: [programme requirements, construction budget, zoning & approvals, milestone dates]
+
+  - name: Scope & documents
+    summary: Which phases, and what exists already
+    apps: [doc-checklist, artifact]
+    says: >-
+      Last part — which phases you need us for, and what paperwork exists. Files
+      come through the secure channel rather than email.
+    asks:
+      - Which phases do you need — feasibility, schematic, permit set, construction administration?
+      - Are other consultants already engaged — civil, structural, MEP, landscape?
+      - Do you have a survey, title report or previous studies?
+      - Who is the decision maker, and who signs the agreement?
+    collects: [phase scope, consultant team, available documents, signing authority]
+
+marketing:
+  - name: The business & the goal
+    summary: What they sell and what has to change
+    apps: [doc-checklist]
+    says: >-
+      Let's start with the business and what you actually need to move. Not the
+      tactics yet — the outcome.
+    asks:
+      - What does the business do, and who buys from you?
+      - What needs to change — more leads, a new brand, a launch, a fix?
+      - How do customers find you today?
+      - How would you know in ninety days that this worked?
+    collects: [business & audience, objective, current channels, success measure]
+
+  - name: What exists today
+    summary: Brand, site, channels and access
+    apps: []
+    says: >-
+      Now what's already there. Don't paste passwords — just tell me what exists
+      and who controls it.
+    asks:
+      - Do you have a website, and who built and hosts it?
+      - What do you have already — logo files, brand guidelines, photography, video?
+      - Which channels are running, and who runs them today?
+      - Do you own the accounts, domain and analytics, or does an agency?
+    collects: [site & hosting, brand assets, active channels, account ownership]
+
+  - name: Budget, scope & approvals
+    summary: Money, timeline and who signs off
+    apps: [doc-checklist, artifact]
+    says: >-
+      Last part — budget, dates and who approves the work. This is what turns a
+      conversation into a proposal.
+    asks:
+      - What monthly or project budget are you working with?
+      - Is there a date driving this — a launch, a season, an event?
+      - Who approves creative, and how many people are in that chain?
+      - Anything off limits — competitors, claims, tone, channels you won't use?
+    collects: [budget, deadline, approval chain, constraints]
+
+msp:
+  - name: The environment
+    summary: Users, sites and what's running
+    apps: [doc-checklist]
+    says: >-
+      Let's map the environment before anyone quotes anything. Counts and
+      product names only — no credentials or IP addresses in this chat.
+    asks:
+      - How many people need support, and across how many locations?
+      - What are they using — Microsoft 365, Google, on-premise servers, a mix?
+      - What line-of-business applications must keep working no matter what?
+      - Who handles IT today — internal staff, another provider, nobody in particular?
+    collects: [user & site count, platform, critical applications, current support]
+
+  - name: Risk & compliance
+    summary: Backups, security posture and obligations
+    apps: []
+    says: >-
+      Now the part that decides how urgent this is: what happens today if
+      something fails or someone gets in.
+    asks:
+      - Are backups running, and has a restore ever been tested?
+      - Is multi-factor authentication turned on for email and remote access?
+      - Any compliance obligations — HIPAA, CMMC, PCI, cyber insurance requirements?
+      - Have you had an incident, and is anything happening right now?
+    collects: [backup & restore state, MFA coverage, compliance obligations, incident history]
+
+  - name: Scope & documents
+    summary: What they want covered, and the paperwork
+    apps: [doc-checklist, artifact, convey-link]
+    says: >-
+      Last part — scope and paperwork. Anything with credentials or network
+      detail goes through the secure channel, never this chat.
+    asks:
+      - What do you want covered — helpdesk, security, projects, procurement, all of it?
+      - What response time do you actually need during business hours?
+      - Are there existing contracts, licences or vendor agreements in place?
+      - Who is our main contact, and who signs?
+    collects: [service scope, response expectation, existing agreements, contacts & signer]

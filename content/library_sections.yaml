@@ -1,0 +1,158 @@
+# The Library — pre-drafted sections a vendor can drop into any skill.
+#
+# Sections are industry-tagged but vendor-portable. A bank with trust services
+# can take Legal's "Estate inventory"; a law firm that owns its building can
+# take Banking's "Business financials". Cross-industry adds are first-class, not
+# an escape hatch — when one lands it carries an origin tag so the vendor can
+# see where it came from.
+#
+# Everything here arrives fully drafted. A section that lands empty puts the
+# vendor in front of a blank page, which is the one thing the editor is supposed
+# to prevent.
+
+banking:
+  - name: Insurance quote
+    summary: Offer a P&C quote through the vendor's agency once the deal is shaped
+    apps: [insurance-quote]
+    says: >-
+      One more thing that saves you a trip: once you own the building you'll need
+      coverage on it. Want a quote from the bank's agency while we're here? Two
+      minutes — everything carries over.
+    asks:
+      - Want an insurance quote alongside your loan package? (yes/no — no pressure)
+      - Any existing coverage or agent relationship we should know about?
+    collects: [quote interest, coverage spec]
+
+  - name: Deposit relationship
+    summary: Community banks fund relationships, not just loans
+    apps: []
+    says: >-
+      Banks look at the whole relationship. Are you open to moving your operating
+      or personal accounts as part of this?
+    asks:
+      - Would you consider moving deposit accounts here? (many banks price better for it)
+      - Roughly what balances would move?
+    collects: [deposit intent, approximate balances]
+
+  - name: Co-borrower / partner intake
+    summary: Mirrors the borrower section for a second party
+    apps: [doc-checklist, id-verify]
+    says: You mentioned a partner. Let's capture them properly so the bank isn't chasing signatures later.
+    asks:
+      - Who is the co-borrower/partner, and what's their role and ownership?
+      - Will they guarantee? Their documents mirror yours — same checklist.
+    collects: [partner identity & percentage, guaranty posture, partner doc manifest]
+
+  - name: Business financials
+    summary: P&L, balance sheet, interims, A/R
+    apps: [doc-checklist]
+    says: Since the business carries this loan, let's talk about the books — no judgment.
+    asks:
+      - Who keeps your books — CPA-prepared, internal, or returns only?
+      - Last full year revenue and rough net? (documents will confirm)
+      - Any concentrations — one big customer, seasonal swings?
+    collects: [books state, revenue stated, concentration flags, financials manifest]
+
+  - name: Construction budget & draws
+    summary: Budget, contingency, GC, draw expectations
+    apps: [doc-checklist]
+    says: Construction deals are won in the budget. Let's build yours so the bank sees a plan, not a guess.
+    asks:
+      - Total budget — hard vs soft costs? Contingency percentage?
+      - Who's the GC — and have they built with a bank draw process before?
+      - How do you expect draws to run?
+    collects: [budget breakdown, GC identity & history, draw expectations]
+
+legal:
+  - name: Entity formation intake
+    summary: LLC/LP/corp formation basics
+    apps: [doc-checklist]
+    says: Forming the entity for this? Let's capture what the attorney will need — it saves a full meeting.
+    asks:
+      - What entity type and state? Working name?
+      - Who are the members/owners and their percentages?
+      - Who's the registered agent — or should that be arranged?
+    collects: [entity type & state, member tree, registered agent]
+
+  - name: Conflict check & engagement
+    summary: The gate every law firm runs before the work starts
+    apps: [id-verify]
+    says: Before we go further, the firm runs a quick conflict check — standard for every matter.
+    asks:
+      - Full legal names of all parties on your side
+      - Names of parties on the other side of the matter
+    collects: [party names both sides, matter type]
+
+  - name: Estate inventory
+    summary: Assets, accounts, property, beneficiaries
+    apps: [doc-checklist]
+    says: >-
+      Estate work starts with an honest inventory. We'll go category by category —
+      nothing sensitive travels in this chat.
+    asks:
+      - Real property you own (addresses only for now)
+      - Major accounts by institution and type — no numbers here
+      - Who are the intended beneficiaries?
+    collects: [property list, account map, beneficiary intent]
+
+insurance:
+  - name: Coverage needs interview
+    summary: What they have, what they're exposed to, what changes
+    apps: [doc-checklist]
+    says: Let's map what you're protecting — property, people, operations — and what's changing.
+    asks:
+      - What are we insuring — property, vehicles, operations, people?
+      - Current carriers and renewal dates?
+      - What changed — new purchase, new venture, claim?
+    collects: [exposure map, current coverage, change driver]
+
+  - name: Claims history
+    summary: The five-year lookback every carrier asks for
+    apps: []
+    says: Carriers will ask about the last five years — better to have it organized on the first pass.
+    asks:
+      - Any claims in the last five years? Type, year, rough amount
+      - Any open claims right now?
+    collects: [claims lookback, open claims]
+
+real_estate:
+  - name: Buyer intake
+    summary: Budget, timeline, must-haves, pre-approval state
+    apps: [doc-checklist]
+    says: Let's get you properly represented — a few questions so the search starts sharp, not scattershot.
+    asks:
+      - Price range and how it's funded — cash, financing, pre-approved?
+      - Areas and property types on your list?
+      - Timeline — and anything that has to sell first?
+    collects: [budget & funding, search criteria, timeline & contingencies]
+
+  - name: Listing details
+    summary: Property facts, condition, timing, pricing expectations
+    apps: [property-eval]
+    says: Before the listing appointment, let's capture the property so the pricing conversation is real.
+    asks:
+      - Address and what you'd want a buyer to know first?
+      - Condition — recent work, known issues?
+      - Timing and price expectations?
+    collects: [property profile, condition notes, timing & price intent]
+
+cpa_tax:
+  - name: Tax organizer kickoff
+    summary: The annual organizer, conversational
+    apps: [doc-checklist]
+    says: "Tax season without the shoebox: I'll walk you through what your CPA needs."
+    asks:
+      - Filing status and dependents — any changes this year?
+      - Income sources — W-2, business, rentals, investments?
+      - Big events — property bought/sold, entity formed, moved states?
+    collects: [filing profile, income map, change events]
+
+  - name: Books & records state
+    summary: Sets scope for cleanup vs compile vs advisory
+    apps: []
+    says: No judgment — the firm just needs to know what exists before quoting the work.
+    asks:
+      - What software (or spreadsheets, or drawer)?
+      - Reconciled through when?
+      - Who touches the books today?
+    collects: [system state, reconciliation date, bookkeeper map]

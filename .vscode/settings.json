@@ -1,0 +1,18 @@
+{
+  "remote.SSH.remotePlatform": {
+    "a2b": "linux"
+  },
+  "remote.SSH.showLoginTerminal": true,
+  "terminal.integrated.profiles.osx": {
+    "A2B server (EC2)": {
+      "path": "ssh",
+      "args": ["a2b"]
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/.shots": true
+  }
+}

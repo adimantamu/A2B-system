@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Loan calculator</title>
+<link rel="stylesheet" href="/theterms/theterms.css">
+</head>
+<body class="tt-page tt-embed">
+<div id="tt-root"></div>
+<script src="/theterms/engine.js"></script>
+<script src="/theterms/view.js"></script>
+<script>
+/*
+ * The bank's website calculator (#140): its products, its rates, its fees and
+ * its disclosures, in its colors. The customer picks a product and an amount;
+ * the rate is the one the bank set, and anything outside the bank's ranges is
+ * refused with the reason. Same engine as the officer's screen.
+ */
+(function () {
+  'use strict';
+  var E = window.TheTermsEngine, V = window.TheTermsView, esc = V.esc, money = V.money;
+  var root = document.getElementById('tt-root');
+  var cfg = null;
+  try { cfg = E.unpack(location.hash); } catch (e) { cfg = null; }
+  if (!cfg || cfg.v !== 1 || !Array.isArray(cfg.products) || !cfg.products.length) {
+    root.innerHTML = '<div class="tt-widget"><div class="tt-card"><h3>This calculator isn\u2019t set up</h3><p class="tt-muted">The embed code is incomplete.</p></div></div>';
+    return;
+  }
+  var bank = cfg.bank || {};
+  document.body.setAttribute('style', V.brandVars(bank));
+  document.title = 'Loan calculator \u00b7 ' + (bank.name || '');
+  var st = null, full = false;
+
+  function choose(p) {
+    st = { id: p.id, type: p.defaultType, frequency: p.defaultFrequency, amount: p.amount, payments: p.payments, termMonths: p.termMonths };
+  }
+  function prod() { return cfg.products.filter(function (p) { return p.id === st.id; })[0] || cfg.products[0]; }
+
+  function termChoices(p) {
+    var out = [];
+    if (st.type === 'single') {
+      for (var m = p.termMonthsMin; m <= p.termMonthsMax; m++) if (m === p.termMonthsMin || m === p.termMonthsMax || m % 3 === 0) out.push(m);
+      return out.map(function (m) { return [m, m + ' months']; });
+    }
+    var f = E.FREQUENCIES[st.frequency];
+    for (var n = p.paymentsMin; n <= p.paymentsMax; n++) {
+      if (n === p.paymentsMin || n === p.paymentsMax || n % f.perYear === 0) out.push(n);
+    }
+    if (out.length > 40) out = out.filter(function (n) { return n === p.paymentsMin || n === p.paymentsMax || n % (f.perYear * 5) === 0; });
+    return out.map(function (n) {
+      var months = n * f.months;
+      return [n, n + ' payments' + (months % 12 === 0 ? ' (' + months / 12 + ' year' + (months === 12 ? '' : 's') + ')' : '')];
+    });
+  }
+
+  function input(p) {
+    return {
+      state: cfg.state || 'TX', loanClass: p.loanClass, loanType: st.type, solveFor: 'payment',
+      frequency: st.type === 'single' ? 'monthly' : st.frequency,
+      amount: Number(String(st.amount).replace(/[$,\s]/g, '')), rate: p.rate,
+      payments: Number(st.payments), termMonths: Number(st.termMonths),
+      balloonMethod: p.balloonMethod, amortization: p.amortization, balloonAmount: p.balloonAmount, balloonStyle: p.balloonStyle,
+      closingDate: E.todayIso(), calendar: p.calendar, rounding: p.rounding, oddDays: p.oddDays, fees: p.fees || [],
+    };
+  }
+
+  function select(id, options, value) {
+    return '<select id="' + id + '">' + options.map(function (o) {
+      return '<option value="' + esc(o[0]) + '"' + (String(o[0]) === String(value) ? ' selected' : '') + '>' + esc(o[1]) + '</option>';
+    }).join('') + '</select>';
+  }
+
+  function paint() {
+    var p = prod();
+    var q = input(p);
+    var r = E.calculate(q);
+    var refusals = r.ok ? E.outsideRange(p, q, r, bank.name) : [];
+    var single = st.type === 'single';
+    var h = '<div class="tt-widget"><div class="tt-widget-head">' + (bank.logo ? '<img src="' + esc(bank.logo) + '" alt="">' : '') +
+      '<strong>' + esc(bank.name || '') + ' loan calculator</strong></div>';
+    h += '<div class="tt-card"><div class="tt-grid">';
+    h += '<div class="tt-f tt-wide"><label for="w-product">Loan</label>' + select('w-product', cfg.products.map(function (x) { return [x.id, x.name]; }), p.id) + '</div>';
+    if (p.types.length > 1) {
+      h += '<div class="tt-f tt-wide"><label for="w-type">Repayment</label>' + select('w-type', p.types.map(function (t) { return [t, E.LOAN_TYPES[t]]; }), st.type) + '</div>';
+    }
+    h += '<div class="tt-f tt-wide"><label for="w-amount">Amount</label><div class="tt-unit pre"><span>$</span><input id="w-amount" inputmode="decimal" value="' + esc(st.amount) + '"></div>' +
+      '<input type="range" class="tt-slider" id="w-slider" min="' + p.amountMin + '" max="' + p.amountMax + '" step="' + (p.amountMax - p.amountMin > 100000 ? 5000 : 500) + '" value="' + esc(st.amount) + '" aria-label="Amount">' +
+      '<div class="tt-range">' + money(p.amountMin * 100, { noCents: true }) + ' to ' + money(p.amountMax * 100, { noCents: true }) + '</div></div>';
+    if (!single && p.frequencies.length > 1) {
+      h += '<div class="tt-f"><label for="w-frequency">Payments</label>' + select('w-frequency', p.frequencies.map(function (f) { return [f, E.FREQUENCIES[f].label]; }), st.frequency) + '</div>';
+    }
+    h += '<div class="tt-f' + (!single && p.frequencies.length > 1 ? '' : ' tt-wide') + '"><label for="w-term">' + (st.type === 'balloon' ? 'Balloon after' : 'Term') + '</label>' +
+      select('w-term', termChoices(p), single ? st.termMonths : st.payments) + '</div>';
+    h += '</div>';
+    if (st.type === 'balloon' && p.balloonMethod === 'amortization') {
+      h += '<p class="tt-muted tt-small" style="margin-top:8px;">Payments figured over ' + p.amortization + ' ' + E.FREQUENCIES[st.frequency].label.toLowerCase() + ' payments, with the rest due as a balloon.</p>';
+    }
+    h += '</div>';
+
+    if (!r.ok) {
+      h += '<div class="tt-alert error">' + r.errors.map(function (e) { return esc(e.message); }).join(' ') + '</div>';
+    } else if (refusals.length) {
+      h += '<div class="tt-alert error">' + refusals.map(esc).join(' ') + '</div>';
+    } else {
+      var s = V.summary(r);
+      h += '<div class="tt-card tt-hero tt-result"><div class="tt-pay">' + esc(s.amount) + ' <small>' + esc(s.per) + '</small></div>' +
+        '<div class="tt-line">' + esc(s.line) + '</div><div class="tt-apr">APR ' + esc(V.apr(r.apr)) + ' \u00b7 rate ' + esc(E.formatRate(p.rate, 2)) + '</div>' +
+        '<p class="tt-muted tt-small" style="margin-top:8px;">' + esc(bank.name) + '\u2019s current rate and fees for ' + esc(p.name) + '.</p></div>';
+      h += V.tila(r, {});
+      if (p.coverage && p.coverage.length) {
+        h += '<div class="tt-card"><h3>Coverage you can add</h3>' + p.coverage.map(function (c) {
+          return '<p class="tt-small" style="margin:6px 0 0;"><strong>' + esc(c.name) + '.</strong> ' + esc(c.text) + '</p>';
+        }).join('') + (cfg.insuranceNotice ? '<p class="tt-notice">' + esc(cfg.insuranceNotice) + '</p>' : '') + '</div>';
+      }
+      h += '<details class="tt-details tt-card"><summary>Every payment</summary>' + V.schedule(r, { all: full, limit: 12 }) +
+        (r.schedule.length > 13 ? '<div style="margin-top:10px;"><button type="button" class="tt-btn ghost sm" id="w-all">' + (full ? 'Show fewer' : 'Show all ' + r.count) + '</button></div>' : '') + '</details>';
+    }
+    h += '<div class="tt-actions" style="margin:12px 0;">';
+    if (cfg.cta && cfg.cta.url) h += '<a class="tt-btn bank" target="_top" href="' + esc(cfg.cta.url) + '">' + esc(cfg.cta.label || 'Talk to a banker') + '</a>';
+    if (p.start) h += '<a class="tt-btn ghost" target="_top" href="' + esc(p.start) + '">Start your application</a>';
+    if (r.ok && !refusals.length) h += '<button type="button" class="tt-btn ghost" id="w-share">Save this quote</button>';
+    h += '</div><div id="w-shared"></div>';
+    if (cfg.disclosure) h += '<p class="tt-disclosure">' + esc(cfg.disclosure) + '</p>';
+    h += '<p class="tt-foot">TheTerms by Lenni \u00b7 calculated on ' + esc(bank.name || 'the bank') + '\u2019s settings</p></div>';
+    root.innerHTML = h;
+    root._last = { r: r, q: q, p: p };
+  }
+
+  function shareLink() {
+    var x = root._last;
+    var payload = {
+      v: 1, bank: { name: bank.name, logo: bank.logo, primary: bank.primary, accent: bank.accent, website: cfg.cta && cfg.cta.url },
+      by: { name: '', email: '' }, product: { name: x.p.name },
+      options: [{ id: 'none', name: 'No coverage', text: '', input: x.q }], selected: 'none',
+      insuranceNotice: cfg.insuranceNotice, disclosure: cfg.disclosure, start: x.p.start || '', at: new Date().toISOString(),
+    };
+    return location.origin + '/theterms/quote.html#' + E.pack(payload);
+  }
+
+  root.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.id === 'w-product') { choose(cfg.products.filter(function (p) { return p.id === t.value; })[0]); }
+    if (t.id === 'w-type') { st.type = t.value; }
+    if (t.id === 'w-frequency') {
+      var f0 = E.FREQUENCIES[st.frequency], f1 = E.FREQUENCIES[t.value];
+      st.payments = Math.max(1, Math.round(Number(st.payments) * f0.months / f1.months));
+      st.frequency = t.value;
+    }
+    if (t.id === 'w-term') { if (st.type === 'single') st.termMonths = t.value; else st.payments = t.value; }
+    if (t.id === 'w-amount') st.amount = t.value;
+    paint();
+  });
+  root.addEventListener('input', function (e) {
+    if (e.target.id === 'w-slider') {
+      st.amount = e.target.value;
+      var a = document.getElementById('w-amount');
+      if (a) a.value = st.amount;
+      clearTimeout(root._t);
+      root._t = setTimeout(paint, 120);
+    }
+  });
+  root.addEventListener('click', function (e) {
+    var t = e.target.closest('button');
+    if (!t) return;
+    if (t.id === 'w-all') { full = !full; paint(); var d = root.querySelector('details'); if (d) d.open = true; }
+    if (t.id === 'w-share') {
+      var link = shareLink();
+      document.getElementById('w-shared').innerHTML = '<div class="tt-alert ok">Your quote is saved at this link. Bookmark it or send it to yourself: ' +
+        '<a class="tt-link" target="_blank" rel="noopener" href="' + esc(link) + '">open your quote</a></div>';
+    }
+  });
+
+  choose(cfg.products[0]);
+  paint();
+})();
+</script>
+</body>
+</html>

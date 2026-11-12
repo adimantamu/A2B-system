@@ -1,0 +1,41 @@
+[Unit]
+Description=Lenni A2B API and vendor console
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/a2b
+
+# The data directory lives outside the deploy tree so a redeploy cannot delete
+# the database. rsync --delete only ever touches /opt/a2b.
+Environment=A2B_DATA_DIR=/var/lib/a2b
+EnvironmentFile=-/etc/a2b/a2b.env
+
+ExecStart=/opt/a2b/.venv/bin/uvicorn a2b.api.main:app \
+    --host 127.0.0.1 --port 8000 --workers 2 --proxy-headers \
+    --forwarded-allow-ips=127.0.0.1
+
+Restart=always
+RestartSec=3
+KillSignal=SIGINT
+TimeoutStopSec=20
+
+# The service needs nothing outside its own tree.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/lib/a2b
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=a2b-api
+
+[Install]
+WantedBy=multi-user.target

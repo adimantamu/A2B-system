@@ -1,0 +1,78 @@
+# Skill templates for the non-banking industries.
+#
+# These exist to prove the model is not banking-shaped. The section sets differ
+# entirely, but tenancy, pinning, compiling, publishing and chaining are the
+# same machinery — which is the point.
+
+templates:
+  - id: legal-entity-formation
+    version: "1.0"
+    name: Entity Formation
+    product_key: legal-entity-formation
+    core: legal
+    overrides:
+      Matter intake:
+        name: Formation basics
+        summary: Entity type, state, members, registered agent
+        says: Forming the entity? Let's capture what the attorney will need — it saves a full meeting.
+        asks:
+          - What entity type and state? Working name?
+          - Who are the members/owners and their percentages?
+          - Who's the registered agent — or should that be arranged?
+        collects: [entity type & state, member tree, registered agent]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: legal-estate-planning
+    version: "1.0"
+    name: Estate Planning
+    product_key: legal-estate-planning
+    core: legal
+    overrides:
+      Matter intake:
+        name: Estate inventory
+        summary: Assets, accounts, property, beneficiaries
+        says: >-
+          Estate work starts with an honest inventory. We'll go category by
+          category — nothing sensitive travels in this chat.
+        asks:
+          - Real property you own (addresses only for now)
+          - Major accounts by institution and type — no numbers here
+          - Who are the intended beneficiaries?
+        collects: [property list, account map, beneficiary intent]
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: ins-commercial-pc
+    version: "1.0"
+    name: Commercial P&C
+    product_key: ins-commercial-pc
+    core: insurance
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: re-buyer-representation
+    version: "1.0"
+    name: Buyer Representation
+    product_key: re-buyer-representation
+    core: real_estate
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.
+
+  - id: cpa-tax-prep
+    version: "1.0"
+    name: Tax Preparation
+    product_key: cpa-tax-prep
+    core: cpa_tax
+    changelog:
+      - version: "1.0"
+        date: "2026-08-11"
+        note: Initial release.

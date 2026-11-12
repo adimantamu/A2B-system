@@ -1,0 +1,78 @@
+# Apps — plug-in capabilities that run inside a section.
+#
+# An app is not a section. A section is conversation; an app is a capability the
+# conversation can invoke when it reaches that section. `doc-checklist` is the
+# one that matters most — it is the engine behind "lender-ready", and it is the
+# existing lenni_validate_package logic wearing a new name.
+
+apps:
+  - id: doc-checklist
+    icon: "📋"
+    name: Doc Checklist
+    tag: Core
+    wave: 1
+    blurb: Tracks every required document to zero gaps. The manifest behind "lender-ready."
+    implemented: true
+
+  - id: artifact
+    icon: "📄"
+    name: Artifact
+    tag: Core
+    wave: 1
+    blurb: A live visual of the package filling out as the customer completes each section.
+    implemented: true
+
+  - id: loan-calculator
+    icon: "🧮"
+    name: Loan Calculator
+    tag: Banking
+    wave: 1
+    blurb: >-
+      Payment, amortization and coverage scenarios inside the deal section.
+      Illustrative only — never a rate quote.
+    implemented: true
+
+  - id: property-eval
+    icon: "🏘️"
+    name: Property Eval
+    tag: Banking
+    wave: 1
+    blurb: Structures stated value and its basis so the collateral section produces something usable.
+    implemented: true
+
+  - id: fdic-bank-data
+    icon: "🏦"
+    name: FDIC Bank Data
+    tag: Banking
+    wave: 2
+    blurb: >-
+      Live FFIEC portfolio data — lets a customer shop which banks actually do
+      their loan type. This is the marketplace path, and it is OFF on a vendor's
+      own machine: on their site they see their products only.
+    implemented: false
+
+  - id: id-verify
+    icon: "🪪"
+    name: ID Verify (Plaid)
+    tag: Third-party
+    wave: 2
+    blurb: Identity verification inside the borrower section — before documents ever move.
+    implemented: false
+
+  - id: insurance-quote
+    icon: "🛡️"
+    name: Insurance Quote
+    tag: Insurance
+    wave: 2
+    blurb: Drafts a coverage spec from what the earlier sections already collected.
+    implemented: false
+
+  - id: convey-link
+    icon: "🔒"
+    name: Convey Connector
+    tag: Secure delivery
+    wave: 1
+    blurb: >-
+      The vendor's Convey instance as the secure delivery step — messaging plus
+      document upload, direct to them.
+    implemented: true

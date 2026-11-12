@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Not a page we want in a search index, and not one a crawler should follow
+     into. The real protection is the staff check on every /api/admin route;
+     this only keeps the address out of places it does not belong. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Lenni internal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bar">
+  <div class="brand">lenni<span>internal</span></div>
+  <nav id="nav" class="hide">
+    <button class="tab on" data-v="overview" onclick="go('overview')">Companies</button>
+    <button class="tab" data-v="demand" onclick="go('demand');loadDemand()">Product demand</button>
+    <button class="tab" data-v="access" onclick="go('access');loadAccess()">Access log</button>
+  </nav>
+  <div class="who" id="who"></div>
+</div>
+
+<!-- Signed out, or signed in as someone who is not us. Both land here, and the
+     copy does not distinguish them: telling a stranger "you are signed in but
+     not staff" confirms the portal is real and that a list exists. -->
+<section class="view on" data-v="gate">
+  <div class="gate">
+    <h1>Internal</h1>
+    <p id="gate-msg">Sign in with a Lenni account.</p>
+    <div class="form">
+      <input id="g-email" type="email" placeholder="you@lenni.io" autocomplete="username">
+      <input id="g-pass" type="password" placeholder="Password" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter')signIn()">
+      <button class="btn" onclick="signIn()">Sign in</button>
+    </div>
+    <div class="err" id="g-err"></div>
+  </div>
+</section>
+
+<section class="view" data-v="overview">
+  <div class="wrap">
+    <div class="head">
+      <h2>Every company on the platform</h2>
+      <select id="win" onchange="loadOverview()">
+        <option value="7">last 7 days</option>
+        <option value="30" selected>last 30 days</option>
+        <option value="90">last 90 days</option>
+      </select>
+    </div>
+    <div id="totals" class="stats"></div>
+    <div id="flags"></div>
+    <div id="series" class="series"></div>
+    <div id="companies"></div>
+  </div>
+</section>
+
+<section class="view" data-v="company">
+  <div class="wrap">
+    <button class="back" onclick="go('overview')">← every company</button>
+    <div id="company"></div>
+  </div>
+</section>
+
+<section class="view" data-v="run">
+  <div class="wrap">
+    <button class="back" id="run-back">← back</button>
+    <div id="run"></div>
+  </div>
+</section>
+
+<section class="view" data-v="demand">
+  <div class="wrap">
+    <div class="head"><h2>What companies offer that we have no template for</h2></div>
+    <p class="sub">Labels lifted from real websites during onboarding scans, across every
+      tenant, that matched nothing in the template library. This is the roadmap.</p>
+    <div id="demand"></div>
+  </div>
+</section>
+
+<section class="view" data-v="access">
+  <div class="wrap">
+    <div class="head"><h2>Who looked at what</h2></div>
+    <p class="sub">This portal shows real customer answers. Every company and every
+      customer run opened here is recorded, so a bank asking who saw their applicant's
+      file has an answer. Including us looking at each other.</p>
+    <div id="access"></div>
+  </div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>

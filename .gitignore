@@ -1,0 +1,37 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Runtime data. The database and generated packages are reproducible from
+# scripts/seed_demo.py; nothing here should be committed.
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Screenshots from the console driver
+.shots/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+
+# Editor settings are personal, but the SSH/deploy tasks are project
+# infrastructure and everyone working on this needs them.
+.vscode/*
+!.vscode/tasks.json
+!.vscode/settings.json

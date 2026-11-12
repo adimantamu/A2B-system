@@ -1,0 +1,256 @@
+# Product registry.
+#
+# A product is a known service offering — one row per thing a vendor sells.
+# The registry wins on taxonomy: when the old Lenni 27-product catalog and this
+# registry disagree, this file is right.
+#
+# `site_phrases` is the matcher's raw material. These are deliberately written
+# in BANK VOICE — the words that appear on a vendor's own website — not in
+# customer voice. The old loan_products.yaml keywords ("apartment", "warehouse
+# for my business") were written for a borrower typing into a chat box and match
+# marketing copy poorly. Both vocabularies are legitimate; they are just aimed at
+# different text.
+#
+# tier 1 = highest-volume, template exists and is production-ready
+# tier 2 = template exists, lower volume
+# tier 3 = catalogued, template not written yet (ingest still classifies it,
+#          which is how unmatched demand reaches the roadmap)
+
+products:
+  # ---------------------------------------------------------------- banking
+  - key: uw-multifamily-perm
+    industry: banking
+    name: Multifamily Permanent
+    tier: 1
+    template: uw-multifamily-perm
+    site_phrases:
+      - apartment lending
+      - multifamily lending
+      - multifamily financing
+      - 5+ unit properties
+      - apartment building loans
+      - multi-family permanent financing
+
+  - key: uw-cre-owner-occupied
+    industry: banking
+    name: Owner-Occupied CRE
+    tier: 1
+    template: uw-cre-owner-occupied
+    site_phrases:
+      - commercial real estate loans
+      - owner occupied commercial
+      - own the building your business
+      - commercial mortgage
+      - business real estate financing
+      - office and retail financing
+
+  - key: uw-cre-investment
+    industry: banking
+    name: Investment CRE
+    tier: 1
+    template: uw-cre-investment
+    site_phrases:
+      - investment property loans
+      - income producing property
+      - non owner occupied commercial
+      - commercial investment financing
+
+  - key: uw-construction-residential
+    industry: banking
+    name: Residential Construction (1-4)
+    tier: 1
+    template: uw-construction-residential
+    site_phrases:
+      - home construction loans
+      - construction to permanent
+      - build your home
+      - lot to move-in
+      - residential construction financing
+      - draw schedule
+
+  - key: uw-construction-commercial
+    industry: banking
+    name: Commercial Construction
+    tier: 2
+    template: uw-construction-commercial
+    site_phrases:
+      - commercial construction loans
+      - ground up construction
+      - development financing
+
+  - key: uw-ci-general
+    industry: banking
+    name: General C&I
+    tier: 1
+    template: uw-ci-general
+    site_phrases:
+      - business loans
+      - lines of credit
+      - working capital
+      - equipment financing
+      - commercial and industrial
+      - business banking loans
+
+  - key: uw-sba
+    industry: banking
+    name: SBA 7(a) / 504
+    tier: 1
+    template: uw-sba
+    site_phrases:
+      - sba loans
+      - sba 7a
+      - sba 504
+      - small business administration
+      - preferred sba lender
+
+  - key: uw-consumer-auto
+    industry: banking
+    name: Consumer Auto
+    tier: 2
+    template: uw-consumer-auto
+    site_phrases:
+      - auto loans
+      - car loans
+      - vehicle financing
+      - new used and refinance
+
+  - key: uw-residential-conventional
+    industry: banking
+    name: Conventional Residential
+    tier: 1
+    template: uw-residential-conventional
+    site_phrases:
+      - home loans
+      - mortgage
+      - conventional mortgage
+      - home financing
+      - purchase or refinance your home
+
+  - key: uw-residential-heloc
+    industry: banking
+    name: HELOC
+    tier: 2
+    template: uw-residential-heloc
+    site_phrases:
+      - home equity
+      - heloc
+      - home equity line of credit
+      - tap your equity
+
+  - key: uw-farmland
+    industry: banking
+    name: Farmland
+    tier: 2
+    template: uw-farmland
+    site_phrases:
+      - farm loans
+      - farmland financing
+      - ranch loans
+      - agricultural real estate
+
+  - key: uw-ag-operating
+    industry: banking
+    name: Ag Operating
+    tier: 2
+    template: uw-ag-operating
+    site_phrases:
+      - operating loans
+      - crop financing
+      - livestock loans
+      - agricultural operating line
+
+  - key: uw-equipment
+    industry: banking
+    name: Equipment Finance
+    tier: 2
+    template: uw-equipment
+    site_phrases:
+      - equipment loans
+      - equipment leasing
+      - machinery financing
+
+  - key: dep-treasury
+    industry: banking
+    name: Treasury Management
+    tier: 3
+    site_phrases:
+      - treasury management
+      - cash management
+      - ach and wire services
+      - merchant services
+
+  - key: dep-business-deposit
+    industry: banking
+    name: Business Deposit Onboarding
+    tier: 3
+    site_phrases:
+      - business checking
+      - business savings
+      - open a business account
+
+  - key: trust-services
+    industry: banking
+    name: Trust Services
+    tier: 3
+    site_phrases:
+      - trust services
+      - wealth and trust
+      - estate administration
+      - serving families for generations
+
+  # ------------------------------------------------------------------ legal
+  - key: legal-entity-formation
+    industry: legal
+    name: Entity Formation
+    tier: 1
+    template: legal-entity-formation
+    site_phrases:
+      - business formation
+      - llc formation
+      - incorporation services
+      - entity setup
+
+  - key: legal-estate-planning
+    industry: legal
+    name: Estate Planning
+    tier: 1
+    template: legal-estate-planning
+    site_phrases:
+      - estate planning
+      - wills and trusts
+      - probate
+      - succession planning
+
+  # -------------------------------------------------------------- insurance
+  - key: ins-commercial-pc
+    industry: insurance
+    name: Commercial P&C
+    tier: 1
+    template: ins-commercial-pc
+    site_phrases:
+      - commercial insurance
+      - business insurance
+      - property and casualty
+      - general liability
+
+  # ------------------------------------------------------------ real estate
+  - key: re-buyer-representation
+    industry: real_estate
+    name: Buyer Representation
+    tier: 1
+    template: re-buyer-representation
+    site_phrases:
+      - buyer representation
+      - find your home
+      - buyers agent
+
+  # ---------------------------------------------------------------- cpa/tax
+  - key: cpa-tax-prep
+    industry: cpa_tax
+    name: Tax Preparation
+    tier: 1
+    template: cpa-tax-prep
+    site_phrases:
+      - tax preparation
+      - tax filing
+      - individual and business returns

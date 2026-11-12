@@ -1,0 +1,117 @@
+/* Styling for the in-page tool panel. Kept alongside webmcp.js so the start
+   page stays a single readable f-string in the API module. */
+
+#a2b-webmcp {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid #e3e8ee;
+}
+
+#a2b-webmcp .wm-h {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+#a2b-webmcp .wm-status {
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 0 0 14px;
+  padding: 9px 11px;
+  border-radius: 8px;
+}
+#a2b-webmcp .wm-live {
+  background: #e8f5ee;
+  color: #1d5b38;
+  border: 1px solid #bfe0cd;
+}
+#a2b-webmcp .wm-idle {
+  background: #f2f5f8;
+  color: #5a6b80;
+  border: 1px solid #e0e6ed;
+}
+
+#a2b-webmcp .wm-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px;
+  font-size: 12px;
+}
+#a2b-webmcp .wm-list li {
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f3f6;
+}
+#a2b-webmcp .wm-list code {
+  background: #eef2f6;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 11.5px;
+  color: #16233a;
+}
+#a2b-webmcp .wm-tdesc { color: #5a6b80; }
+
+#a2b-webmcp .wm-form {
+  background: #fafbfc;
+  border: 1px solid #e3e8ee;
+  border-radius: 10px;
+  padding: 14px;
+}
+#a2b-webmcp .wm-pick {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid #d4dbe4;
+  border-radius: 7px;
+  font-size: 13px;
+  background: #fff;
+  color: #16233a;
+}
+#a2b-webmcp .wm-desc {
+  font-size: 12px;
+  color: #5a6b80;
+  margin: 9px 0 11px;
+  line-height: 1.5;
+}
+#a2b-webmcp .wm-row {
+  display: block;
+  margin-bottom: 8px;
+}
+#a2b-webmcp .wm-key {
+  display: block;
+  font-size: 11px;
+  color: #5a6b80;
+  margin-bottom: 3px;
+}
+#a2b-webmcp .wm-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 9px;
+  border: 1px solid #d4dbe4;
+  border-radius: 7px;
+  font-size: 12.5px;
+  color: #16233a;
+}
+#a2b-webmcp .wm-run {
+  width: 100%;
+  background: #16233a;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+}
+#a2b-webmcp .wm-run[disabled] { opacity: .6; cursor: default; }
+#a2b-webmcp .wm-out {
+  background: #0f1a2e;
+  color: #d5e5df;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 12px 0 0;
+  max-height: 260px;
+  overflow: auto;
+  white-space: pre-wrap;
+}

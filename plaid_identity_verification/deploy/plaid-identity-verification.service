@@ -1,0 +1,38 @@
+[Unit]
+Description=Lenni Plaid Identity Verification demo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/plaid_identity_verification
+
+EnvironmentFile=-/etc/a2b/a2b.env
+EnvironmentFile=-/etc/plaid_identity_verification/demo.env
+
+ExecStart=/opt/plaid_identity_verification/.venv/bin/uvicorn app:app \
+    --host 127.0.0.1 --port 8011 --workers 2 --proxy-headers \
+    --forwarded-allow-ips=127.0.0.1
+
+Restart=always
+RestartSec=3
+KillSignal=SIGINT
+TimeoutStopSec=20
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/plaid_identity_verification
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=plaid-identity-verification
+
+[Install]
+WantedBy=multi-user.target

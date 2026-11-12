@@ -1,0 +1,46 @@
+{
+  "note": "Real Texas community banks, for demonstrating the scanner against sites nobody here has ever touched. Names, cities, assets and websites are from FDIC institution data joined to FFIEC Call Report figures; the websites are the banks' own. Nothing here is a customer, a prospect or a partner — it is a shortlist of public websites to scan, chosen for geographic spread and for being ordinary rather than convenient.",
+  "as_of": "2026-Q1",
+  "banks": [
+    {
+      "name": "TexasBank",
+      "city": "Brownwood",
+      "website": "https://www.texasbank.com",
+      "assets_musd": 2389,
+      "cre_pct": 41.1,
+      "ci_pct": 1.6
+    },
+    {
+      "name": "Security State Bank & Trust",
+      "city": "Fredericksburg",
+      "website": "https://www.ssbtexas.com",
+      "assets_musd": 2143,
+      "cre_pct": 68.2,
+      "ci_pct": 12.4
+    },
+    {
+      "name": "Citizens National Bank of Texas",
+      "city": "Waxahachie",
+      "website": "https://www.cnboftexas.com",
+      "assets_musd": 2094,
+      "cre_pct": 64.7,
+      "ci_pct": 10.4
+    },
+    {
+      "name": "First State Bank of Uvalde",
+      "city": "Uvalde",
+      "website": "https://www.fsbuvalde.bank",
+      "assets_musd": 1789,
+      "cre_pct": 59.0,
+      "ci_pct": 12.0
+    },
+    {
+      "name": "American Bank of Commerce",
+      "city": "Wolfforth",
+      "website": "https://www.theabcbank.com",
+      "assets_musd": 1692,
+      "cre_pct": 69.6,
+      "ci_pct": 19.9
+    }
+  ]
+}
